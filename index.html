@@ -206,5 +206,8 @@ function submitEx(){const t=document.getElementById('exText').value.trim();if(!t
 function scoreRedFlag(){let score=0,done=0;rfQs.forEach((_,i)=>{const x=document.querySelector(`input[name="rf${i}"]:checked`);if(x){done++;score+=+x.value}});if(done<rfQs.length){toast("請先完成全部 "+rfQs.length+" 題");return}const pct=Math.round(score/rfQs.length*100);let cn="感情警訊雷達：運作正常。",en="RED FLAG RADAR: WORKING.";if(pct>=80){cn="妳看到的不是警訊，是潛力。";en="YOU SEE POTENTIAL, NOT RED FLAGS."}else if(pct>=40){cn="選擇性色盲，請小心。";en="SELECTIVELY COLOR-BLIND."}const el=document.getElementById('rfResult');el.style.display='block';el.innerHTML=`<div class="eyebrow">感情警訊容忍度 · RED FLAG TOLERANCE</div><div class="diagnosis">${pct}%</div><div style="font-family:'Noto Serif TC','PMingLiU',serif;font-size:19px">${cn}</div><div class="diagnosis-en" style="margin-top:8px">${en}</div>`;el.scrollIntoView({behavior:'smooth'})}
 init();renderCompletedMissions();
 </script>
+
+<script src="./ex-recycling-config.js"></script>
+<script src="./ex-recycling-client.js"></script>
 </body>
 </html>
