@@ -30,16 +30,24 @@ jobs:
           cp index.html 1884-logo-story.svg _site/
           python - <<'PY'
           from pathlib import Path
-          import re
+          import re, base64
+
+          # Extract the actual PNG bytes from the SVG wrapper.
+          svg = Path('1884-logo-story.svg').read_text(encoding='utf-8')
+          m = re.search(r'data:image/png;base64,([^"\']+)', svg)
+          if not m:
+              raise SystemExit('Embedded PNG logo not found in SVG')
+          Path('_site/1884-logo-story.png').write_bytes(base64.b64decode(m.group(1)))
 
           p = Path('_site/index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Same-origin logo for both page and Story canvas.
-          s = s.replace('https://1884.com.tw/1884-logo-transparent.png', './1884-logo-story.svg')
-          s = re.sub(r'const storyLogoData="[^"]*";', 'const storyLogoData="./1884-logo-story.svg";', s)
+          # Use the real PNG for both page logo and Story canvas.
+          s = s.replace('https://1884.com.tw/1884-logo-transparent.png', './1884-logo-story.png')
+          s = s.replace('./1884-logo-story.svg', './1884-logo-story.png')
+          s = re.sub(r'const storyLogoData="[^"]*";', 'const storyLogoData="./1884-logo-story.png";', s)
 
-          # Fix the extra closing brace in drawStory() that breaks Safari/JS parsing.
+          # Fix legacy extra closing brace if an older source version is checked out.
           s = s.replace('ctx.fillText("七夕限定",540,1803)}}}', 'ctx.fillText("七夕限定",540,1803)}}')
 
           touch_fix = '''
@@ -57,7 +65,8 @@ jobs:
             button { touch-action:manipulation; }
           </style>
           '''
-          s = s.replace('</head>', touch_fix + '\n</head>')
+          if 'id="touch-fix"' not in s:
+              s = s.replace('</head>', touch_fix + '\n</head>')
           p.write_text(s, encoding='utf-8')
           PY
 
