@@ -1,0 +1,46 @@
+name: Wire Red Flag Card Game
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Connect homepage Red Flag Test and clean card copy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          s = index.read_text(encoding='utf-8')
+          old = '''<button onclick="go('redflag')"><span class="index">04</span><strong>感情警訊測驗</strong><small>RED FLAG TEST</small></button>'''
+          new = '''<button onclick="window.location.href='pixel-cards.html'"><span class="index">04</span><strong>感情警訊測驗</strong><small>RED FLAG TEST</small></button>'''
+          if old in s:
+              s = s.replace(old, new, 1)
+          index.write_text(s, encoding='utf-8')
+
+          card = Path('pixel-cards.html')
+          c = card.read_text(encoding='utf-8')
+          c = c.replace(
+              "E('他很會提供情緒價值，但工作是男公關。','Great emotional support. Profession: host.','情緒價值專家','PROFESSIONAL HAZARD','工作是工作','我知道，但我可以',[8,-5,5,0],[-9,13,-5,4],3),",
+              "E('他很會提供情緒價值，但對每個人都一樣會。','He is great at emotional support, but treats everyone just as warmly.','很會哄人的他','CHARMING TYPE','我先保持清醒','會哄我就先加分',[8,-5,5,0],[-7,10,-3,2],3),"
+          )
+          card.write_text(c, encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html pixel-cards.html
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+          else
+            git commit -m "Connect Red Flag Test to card game"
+            git push
+          fi
