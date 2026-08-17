@@ -1,0 +1,31 @@
+name: Promote Pixel Cards V2
+on:
+  push:
+    paths:
+      - '.github/workflows/promote-pixel-v2.yml'
+permissions:
+  contents: write
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove profession-based Red Flag and promote V2
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('pixel-cards-v2.html')
+          s = p.read_text()
+          old = "E('他很會提供情緒價值，但工作是男公關。','Great emotional support. Profession: host.','情緒價值專家','PROFESSIONAL HAZARD','工作是工作','我知道，但我可以',[8,-5,5,0],[-9,13,-5,4],3),"
+          new = "E('他很會提供情緒價值，但對每個人都一樣會。','He is emotionally attentive, but equally charming with everyone.','太會聊天的他','CHARMING TYPE','我先保持清醒','會哄我就先加分',[8,-5,5,0],[-7,11,-3,3],3),"
+          if old not in s:
+              raise SystemExit('Target question not found; refusing blind edit')
+          s = s.replace(old, new)
+          p.write_text(s)
+          Path('pixel-cards.html').write_text(s)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pixel-cards-v2.html pixel-cards.html
+          git commit -m 'Promote pixel cards V2 and remove profession-based Red Flag'
+          git push
