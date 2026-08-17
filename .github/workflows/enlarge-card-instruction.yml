@@ -1,0 +1,38 @@
+name: Enlarge card game instruction
+
+on:
+  push:
+    paths:
+      - '.github/workflows/enlarge-card-instruction.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enlarge yellow swipe instruction
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          old = '.choice-preview{height:25px;text-align:center;color:var(--gold);font-size:10px}'
+          new = '.choice-preview{height:32px;text-align:center;color:var(--gold);font-size:14px;font-weight:700;letter-spacing:.08em;line-height:32px}'
+
+          for filename in ('pixel-cards.html', 'pixel-cards-v2.html'):
+              p = Path(filename)
+              s = p.read_text(encoding='utf-8')
+              if old not in s:
+                  raise SystemExit(f'Target style not found in {filename}; refusing blind edit')
+              p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pixel-cards.html pixel-cards-v2.html
+          git commit -m 'Enlarge card game swipe instruction'
+          git push
