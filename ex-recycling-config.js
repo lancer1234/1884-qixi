@@ -1,6 +1,4 @@
 // EX RECYCLING BIN cloud submission config.
-// After deploying google-apps-script/Code.gs as a Google Apps Script Web App,
-// paste the /exec URL below and commit this file.
 window.EX_RECYCLING_CONFIG = {
-  endpoint: ""
+  endpoint: "https://script.google.com/macros/s/AKfycbzapTpvb-_pPSDzj9KrOuZKnMjnezLJ9QFHayHd2aA_VP9bIOJEgL8_3QvnSGdk8E7N/exec"
 };
