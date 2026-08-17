@@ -1,114 +1,55 @@
-<!doctype html>
-<html lang="zh-Hant">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090909">
-<title>1884 七夕｜PIXEL CARD PROTOTYPE</title>
-<style>
-:root{--bg:#090909;--ink:#161616;--paper:#f2e7c9;--gold:#d4ae64;--red:#e55361;--green:#79d98b;--muted:#968a77;--px:3px}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#090909;color:#f5ead1;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;overflow-x:hidden}
-body{background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:12px 12px}
-.wrap{max-width:430px;min-height:100dvh;margin:auto;padding:18px 16px 30px;display:flex;flex-direction:column}
-.pixel-box{border:3px solid var(--gold);box-shadow:6px 6px 0 #3b2d16,-3px -3px 0 #0b0b0b;background:#111;padding:12px;image-rendering:pixelated}
-.header{text-align:center;margin-bottom:14px}.logo{font-family:Georgia,serif;font-size:36px;letter-spacing:.12em}.sub{font-size:10px;letter-spacing:.18em;color:var(--gold);margin-top:4px}.title{font-size:14px;margin-top:10px}.tiny{font-size:10px;color:#8f8778;line-height:1.5}
-.hud{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin:8px 0 14px}.flag{padding:8px 6px;border:2px solid currentColor;background:#0c0c0c;font-size:10px}.flag.red{color:var(--red);text-align:left}.flag.green{color:var(--green);text-align:right}.counter{text-align:center;font-size:10px;color:#e9d8b5}
-.arena{position:relative;height:min(520px,62dvh);min-height:430px;display:flex;align-items:center;justify-content:center;perspective:900px;touch-action:none;user-select:none}
-.deck-shadow,.card{position:absolute;width:min(326px,84vw);height:min(450px,56dvh);min-height:392px;border:3px solid #d9bc75;background:#e8d9b4;color:#18130c;box-shadow:7px 7px 0 #2f2517,-3px -3px 0 #6a5330;transform-origin:50% 110%;image-rendering:pixelated}
-.deck-shadow.s1{transform:translate(8px,8px) rotate(2deg);background:#7b6542}.deck-shadow.s2{transform:translate(4px,4px) rotate(-1deg);background:#a28858}
-.card{z-index:5;display:flex;flex-direction:column;padding:18px;transition:transform .12s ease;cursor:grab}.card.dragging{transition:none;cursor:grabbing}.card.fly-left{transition:transform .38s cubic-bezier(.2,.7,.3,1);transform:translate(-150vw,30px) rotate(-28deg)!important}.card.fly-right{transition:transform .38s cubic-bezier(.2,.7,.3,1);transform:translate(150vw,30px) rotate(28deg)!important}
-.card::before,.card::after{content:"";position:absolute;width:18px;height:18px}.card::before{left:8px;top:8px;border-left:3px solid #6d5430;border-top:3px solid #6d5430}.card::after{right:8px;bottom:8px;border-right:3px solid #6d5430;border-bottom:3px solid #6d5430}
-.card-top{display:flex;justify-content:space-between;font-size:10px;color:#7c6843}.card-no{border:2px solid #7c6843;padding:4px 6px}.heart{font-size:18px;color:#9c2331}.pixel-art{height:125px;margin:18px 0 14px;display:grid;place-items:center;background:#d7c49a;border:3px solid #6f5734;box-shadow:inset 4px 4px 0 #b09a70}
-.avatar{width:72px;height:72px;position:relative;background:#1b1b1b;box-shadow:0 -18px 0 #1b1b1b,18px 0 0 #1b1b1b,-18px 0 0 #1b1b1b,0 18px 0 #8b5d50}.avatar:after{content:"?";position:absolute;inset:0;display:grid;place-items:center;color:#d9bc75;font-size:32px;font-weight:900}
-.category{font-size:10px;color:#765e35;letter-spacing:.14em;text-align:center}.question{font-family:Georgia,"Noto Serif TC",serif;font-size:23px;line-height:1.5;text-align:center;margin:auto 4px;display:flex;align-items:center;justify-content:center;flex:1}.question-en{text-align:center;color:#786c58;font-size:10px;line-height:1.5;min-height:34px}.swipe-hint{text-align:center;font-size:9px;color:#6e624f;margin-top:12px;border-top:2px dashed #9b875e;padding-top:9px}
-.stamp{position:absolute;top:72px;padding:8px;border:4px solid currentColor;font-weight:900;font-size:18px;letter-spacing:.08em;opacity:0;z-index:8;pointer-events:none}.stamp.red{left:22px;color:#bf293a;transform:rotate(-12deg)}.stamp.green{right:16px;color:#318b48;transform:rotate(12deg)}
-.controls{display:flex;justify-content:center;gap:18px;margin-top:4px}.round{width:64px;height:56px;background:#101010;border:3px solid currentColor;box-shadow:4px 4px 0 #312b23;font-family:inherit;font-weight:900}.round.red{color:var(--red)}.round.green{color:var(--green)}
-.shuffle-screen,.end-screen{position:absolute;inset:0;z-index:20;background:#080808;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:28px}.shuffle-title{font-size:16px;color:var(--gold);margin-bottom:30px}.shuffle-deck{width:150px;height:205px;position:relative}.mini{position:absolute;inset:0;border:3px solid #d5b465;background:#6e5733;box-shadow:5px 5px 0 #2d2317}.mini:nth-child(1){animation:shuffleA .22s ease-in-out 7 alternate}.mini:nth-child(2){animation:shuffleB .22s ease-in-out 7 alternate}.mini:nth-child(3){background:#b99b64;animation:shuffleC .22s ease-in-out 7 alternate}.loading{margin-top:28px;font-size:10px;color:#8f856f}.loading:after{content:"...";animation:dots .8s steps(4,end) infinite}
-@keyframes shuffleA{to{transform:translateX(-66px) rotate(-10deg)}}@keyframes shuffleB{to{transform:translateX(66px) rotate(10deg)}}@keyframes shuffleC{to{transform:translateY(-15px) rotate(2deg)}}@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%,100%{content:"..."}}
-.hidden{display:none!important}.end-screen{position:fixed}.score{font-size:42px;color:var(--gold);margin:22px 0 10px}.summary{font-size:11px;line-height:1.8;color:#b9ad96}.restart{margin-top:24px;border:3px solid var(--gold);background:#15110b;color:#f4dfaf;padding:12px 18px;font-family:inherit;box-shadow:5px 5px 0 #342817}
-.footer{text-align:center;font-size:9px;color:#5f594e;margin-top:auto;padding-top:14px}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="header">
-    <div class="logo">1884</div>
-    <div class="sub">七夕 · PIXEL CARD PROTOTYPE</div>
-    <div class="title">這張牌，是警訊還是可以？</div>
-    <div class="tiny">左滑 RED FLAG ／ 右滑 GREEN FLAG</div>
-  </div>
-
-  <div class="hud">
-    <div class="flag red">◀ RED FLAG</div>
-    <div class="counter"><span id="current">1</span> / <span id="total">0</span></div>
-    <div class="flag green">GREEN FLAG ▶</div>
-  </div>
-
-  <div class="arena" id="arena">
-    <div class="deck-shadow s1"></div><div class="deck-shadow s2"></div>
-    <div class="card" id="card">
-      <div class="stamp red" id="redStamp">RED FLAG</div><div class="stamp green" id="greenStamp">GREEN FLAG</div>
-      <div class="card-top"><span class="card-no" id="cardNo">#001</span><span class="heart">♥</span></div>
-      <div class="pixel-art"><div class="avatar"></div></div>
-      <div class="category">LOVE EVENT CARD</div>
-      <div class="question" id="question"></div>
-      <div class="question-en" id="questionEn"></div>
-      <div class="swipe-hint">DRAG THE CARD · 左右滑動卡牌</div>
-    </div>
-  </div>
-
-  <div class="controls">
-    <button class="round red" id="redBtn">◀<br>RED</button>
-    <button class="round green" id="greenBtn">GREEN<br>▶</button>
-  </div>
-  <div class="footer">1884 TAIPEI · HIDDEN CONCEPT PAGE</div>
-</div>
-
-<div class="shuffle-screen" id="shuffle">
-  <div class="shuffle-title">正在洗牌<br><span class="tiny">SHUFFLING THE DECK</span></div>
-  <div class="shuffle-deck"><div class="mini"></div><div class="mini"></div><div class="mini"></div></div>
-  <div class="loading">LOADING LOVE PROBLEMS</div>
-</div>
-
-<div class="end-screen hidden" id="end">
-  <div class="logo">1884</div><div class="sub">七夕 · SWIPE RESULT</div>
-  <div class="score" id="score">0%</div>
-  <div class="title" id="endingTitle"></div>
-  <div class="summary" id="summary"></div>
-  <button class="restart" onclick="restartGame()">重新洗牌 / SHUFFLE AGAIN</button>
-</div>
-
-<script>
-const cards=[
-["很帥，但一天只回三次訊息。","Hot, but replies only three times a day."],
-["跟前任還是最好的朋友。","Still best friends with the ex."],
-["第一次約會就一直聊前任。","Talks about the ex on the first date."],
-["手機永遠反著放，而且不讓妳碰。","Phone is always face down and off limits."],
-["會記得妳所有小習慣。","Remembers all your little habits."],
-["每次吵架就消失兩三天。","Disappears for days after an argument."],
-["主動介紹妳給他的朋友認識。","Introduces you to friends without hesitation."],
-["只在半夜找妳，白天幾乎消失。","Only texts at night, disappears by day."],
-["準時赴約，而且會提前確認時間。","Shows up on time and confirms plans."],
-["每一任前任在他口中都有問題。","Every ex was apparently the problem."],
-["對服務生很有禮貌。","Treats service staff with respect."],
-["剛認識三天就說妳是最特別的人。","Calls you special after three days."],
-["願意聽妳說完，不急著反駁。","Listens before trying to argue back."],
-["說不想談戀愛，但每天做像情侶的事。","Does relationship things but says no relationship."],
-["跟朋友出去也不會突然失聯。","Doesn't vanish just because they're out with friends."],
-["每次都臨時約，從來不提前安排。","Always last-minute, never plans ahead."]
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090707"><title>1884 七夕｜LOVE DECISIONS V2</title><style>
+:root{--bg:#090707;--gold:#c9a65f;--cream:#eee3cf;--red:#c64b58;--green:#6f9c78;--ink:#160d0e}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--cream);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden}body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 35%,#3b1c20 0,#160d0f 38%,#080707 75%);opacity:.85}.game{position:relative;z-index:1;width:min(100%,430px);height:100dvh;margin:auto;display:flex;flex-direction:column;padding:14px 14px 20px}.brand{text-align:center;font-family:Georgia,serif;font-size:25px;letter-spacing:.16em}.sub{text-align:center;color:var(--gold);font-size:8px;letter-spacing:.18em;margin:3px 0 9px}.meters{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;border-top:1px solid #6d5935;border-bottom:1px solid #6d5935;padding:9px 2px}.meter{text-align:center}.ico{font-size:18px}.mname{font-size:7px;color:#a8926b;margin:3px}.bar{height:3px;background:#2d2520}.fill{height:100%;background:var(--gold);transition:width .35s}.prompt{text-align:center;min-height:64px;padding:12px 12px 3px;font-family:Georgia,"Noto Serif TC",serif;font-size:18px;line-height:1.5}.prompt-en{text-align:center;color:#988a78;font-size:8px;min-height:17px}.choice-preview{height:25px;text-align:center;color:var(--gold);font-size:10px}.arena{position:relative;flex:1;min-height:380px;display:grid;place-items:center;perspective:1000px;touch-action:none;user-select:none}.behind,.card{position:absolute;width:min(310px,79vw);height:min(390px,50dvh);min-height:360px;border:2px solid #80683c}.behind{background:#2b1719}.b1{transform:translate(8px,8px) rotate(2deg)}.b2{transform:translate(4px,4px) rotate(-1deg);background:#432126}.card{z-index:4;background:#bfa564;color:var(--ink);display:flex;flex-direction:column;transform-origin:50% 115%;box-shadow:0 15px 40px #0008;cursor:grab;transition:transform .14s}.card.drag{transition:none}.card.left{transition:.38s;transform:translate(-150vw,25px) rotate(-28deg)!important}.card.right{transition:.38s;transform:translate(150vw,25px) rotate(28deg)!important}.portrait{height:62%;margin:14px 14px 0;background:#251216;position:relative;overflow:hidden;border:2px solid #6c542d}.scene{position:absolute;inset:0;background:linear-gradient(155deg,var(--sc1,#38171d) 0 40%,var(--sc2,#1a1012) 40%)}.moon{position:absolute;width:55px;height:55px;border-radius:50%;background:var(--moon,#d6b86d);right:24px;top:25px;opacity:.72}.person{position:absolute;width:130px;height:170px;left:50%;bottom:-18px;transform:translateX(-50%)}.hair{position:absolute;width:98px;height:90px;left:16px;top:0;background:var(--hair,#171112);clip-path:var(--hairshape,polygon(15% 0,82% 5%,100% 40%,83% 95%,10% 88%,0 34%))}.face{position:absolute;width:70px;height:94px;left:30px;top:27px;background:var(--skin,#b97868);clip-path:var(--faceshape,polygon(15% 0,85% 0,100% 68%,50% 100%,0 68%))}.eye{position:absolute;width:6px;height:16px;background:#171112;top:63px}.e1{left:48px}.e2{right:48px}.body{position:absolute;width:130px;height:78px;bottom:0;background:var(--shirt,#15181a);clip-path:polygon(23% 0,77% 0,100% 100%,0 100%)}.neck{position:absolute;width:26px;height:31px;background:var(--skin,#b97868);left:52px;top:108px}.accessory{position:absolute;z-index:3;color:var(--acc,#d4b76c);font-size:32px;left:50%;top:112px;transform:translateX(-50%);line-height:1}.label{text-align:center;padding:10px 8px 3px;font-size:12px;letter-spacing:.08em}.role{text-align:center;color:#5c482c;font-size:8px;letter-spacing:.12em}.decision{margin-top:auto;background:#2b1619;color:#d8bf83;display:flex;justify-content:space-between;padding:12px;font-size:9px}.stamp{position:absolute;top:34px;padding:8px;border:3px solid currentColor;font-weight:bold;font-size:17px;opacity:0;z-index:9}.stamp.r{left:16px;color:var(--red);transform:rotate(-12deg)}.stamp.g{right:16px;color:#82b98d;transform:rotate(12deg)}.hints{display:flex;justify-content:space-between;color:#89795e;font-size:8px;padding:4px 14px}.shuffle,.end{position:fixed;z-index:20;inset:0;background:#090707;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.deck{width:145px;height:190px;position:relative;margin:28px}.mini{position:absolute;inset:0;background:#4a2428;border:2px solid var(--gold);box-shadow:5px 5px #160d0e}.mini:nth-child(1){animation:a .2s 8 alternate}.mini:nth-child(2){animation:b .2s 8 alternate}.mini:nth-child(3){animation:c .2s 8 alternate;background:#8b7042}@keyframes a{to{transform:translateX(-65px) rotate(-10deg)}}@keyframes b{to{transform:translateX(65px) rotate(10deg)}}@keyframes c{to{transform:translateY(-18px)}}.hidden{display:none}.end h1{font-family:Georgia,serif;color:var(--gold);font-weight:normal}.end p{max-width:310px;line-height:1.8;color:#b7aa94;font-size:11px}.again{border:1px solid var(--gold);background:#2a1618;color:var(--cream);padding:12px 18px;font:inherit}.foot{text-align:center;font-size:7px;color:#675c4c}
+</style></head><body><main class="game"><div class="brand">1884</div><div class="sub">七夕 · LOVE, LIES & RED FLAGS.</div><div class="meters"><div class="meter"><div class="ico">◇</div><div class="mname">理智</div><div class="bar"><div class="fill" id="m0"></div></div></div><div class="meter"><div class="ico">♢</div><div class="mname">心動</div><div class="bar"><div class="fill" id="m1"></div></div></div><div class="meter"><div class="ico">♧</div><div class="mname">姐妹</div><div class="bar"><div class="fill" id="m2"></div></div></div><div class="meter"><div class="ico">♨</div><div class="mname">酒量</div><div class="bar"><div class="fill" id="m3"></div></div></div></div><div class="prompt" id="q"></div><div class="prompt-en" id="qe"></div><div class="choice-preview" id="preview">左右拖動卡牌做決定</div><div class="arena"><div class="behind b1"></div><div class="behind b2"></div><article class="card" id="card"><div class="stamp r" id="rs">RED FLAG</div><div class="stamp g" id="gs">GREEN FLAG</div><div class="portrait" id="portrait"><div class="scene"></div><div class="moon"></div><div class="person"><div class="body"></div><div class="neck"></div><div class="face"></div><div class="hair"></div><div class="eye e1"></div><div class="eye e2"></div><div class="accessory" id="acc"></div></div></div><div class="label" id="name">今晚的陌生人</div><div class="role" id="role">LOVE EVENT</div><div class="decision"><span>◀ RED FLAG</span><span>GREEN FLAG ▶</span></div></article></div><div class="hints"><span>左滑 · 不行</span><span id="count">1 / 15</span><span>可以 · 右滑</span></div><div class="foot">1884 TAIPEI · HIDDEN V2 PROTOTYPE</div></main><section class="shuffle" id="shuffle"><div class="brand">1884</div><div class="sub">今晚，妳會做什麼決定？</div><div class="deck"><div class="mini"></div><div class="mini"></div><div class="mini"></div></div><div class="sub">SHUFFLING YOUR BAD DECISIONS...</div></section><section class="end hidden" id="end"><div class="brand">1884</div><div class="sub">TONIGHT'S VERDICT</div><h1 id="ending"></h1><p id="result"></p><button class="again" onclick="restart()">重新洗牌 / PLAY AGAIN</button></section><script>
+const looks=[
+{skin:'#b97868',hair:'#171112',shirt:'#15181a',sc1:'#38171d',sc2:'#1a1012',moon:'#d6b86d',shape:'polygon(15% 0,82% 5%,100% 40%,83% 95%,10% 88%,0 34%)',acc:''},
+{skin:'#d29a7d',hair:'#321b16',shirt:'#202c38',sc1:'#17303b',sc2:'#101a20',moon:'#d2c98e',shape:'polygon(0 18%,25% 0,92% 8%,100% 62%,76% 78%,20% 90%,0 60%)',acc:'◆'},
+{skin:'#9e6257',hair:'#080808',shirt:'#4a2027',sc1:'#54222a',sc2:'#201114',moon:'#e2a05d',shape:'polygon(10% 0,90% 0,100% 25%,88% 48%,95% 88%,5% 88%,12% 48%,0 25%)',acc:'✦'},
+{skin:'#c8876e',hair:'#5b3828',shirt:'#172e28',sc1:'#243a31',sc2:'#111d19',moon:'#b9c58b',shape:'polygon(0 8%,70% 0,100% 22%,88% 50%,70% 35%,50% 50%,20% 38%,0 60%)',acc:'◇'},
+{skin:'#e0aa8c',hair:'#c6a66c',shirt:'#332338',sc1:'#352640',sc2:'#17111d',moon:'#d9b5ce',shape:'polygon(8% 8%,40% 0,70% 10%,100% 5%,82% 38%,92% 72%,70% 60%,48% 88%,20% 70%,0 34%)',acc:'♢'},
+{skin:'#87534a',hair:'#1a1513',shirt:'#3b3021',sc1:'#403621',sc2:'#1b1710',moon:'#c6aa68',shape:'polygon(4% 18%,18% 0,80% 0,100% 22%,92% 88%,65% 68%,42% 95%,15% 70%,0 42%)',acc:'♠'},
+{skin:'#c98b79',hair:'#151515',shirt:'#202020',sc1:'#313131',sc2:'#111',moon:'#eee0ba',shape:'polygon(5% 0,95% 0,100% 42%,80% 28%,68% 62%,35% 45%,18% 70%,0 35%)',acc:'✚'},
+{skin:'#b16f61',hair:'#6c1d25',shirt:'#1b2438',sc1:'#17264a',sc2:'#0d1426',moon:'#e0d7a7',shape:'polygon(0 12%,32% 0,65% 9%,100% 0,85% 38%,100% 70%,68% 62%,50% 94%,25% 60%,0 72%)',acc:'★'}];
+const E=(q,e,n,r,l,g,L,G,v)=>({q,e,n,r,l,g,L,G,v});const events=[
+E('183、長得很帥，但他說自己不喜歡報備。','183 cm. Very hot. Says he does not do check-ins.','不報備先生','MYSTERIOUS TYPE','RED FLAG','183？先聊再說',[12,-8,8,0],[-10,14,-4,3],0),
+E('他記得妳上次隨口提過最喜歡喝的酒。','He remembers the drink you mentioned.','記性很好的他','ATTENTIVE TYPE','太會了，很危險','這可以加分',[7,-5,2,0],[-3,10,5,2],1),
+E('姐妹說她第一眼就不喜歡他。','Your bestie dislikes him at first sight.','姐妹不認證的男人','BESTIE WARNING','相信姐妹','我自己會判斷',[7,-7,12,0],[-6,10,-10,0],2),
+E('他凌晨一點問：「妳還在1884嗎？」','At 1AM: Are you still at 1884?','凌晨一點的訊息','LATE NIGHT CALL','已讀就好','傳定位給他',[9,-6,4,-2],[-10,12,-3,5],3),
+E('他說不想談戀愛，但每天都做情侶才會做的事。','No relationship, boyfriend behavior daily.','不定義關係先生','SITUATIONSHIP','下一位','再觀察一下',[12,-10,5,0],[-12,11,-4,2],4),
+E('他對服務生很有禮貌，而且會記得說謝謝。','Kind to service staff. Always says thank you.','有禮貌的男人','GREEN SIGNAL','這只是基本','基本也值得加分',[4,-2,0,0],[0,7,3,0],5),
+E('他每一任前任在故事裡都是壞人。','Every ex is the villain.','永遠沒錯先生','EX FILES','這很不妙','也許他真的很衰',[11,-8,5,0],[-12,8,-5,1],6),
+E('今晚第一次見面，他就說妳跟別人不一樣。','First night and you are already different.','進度很快的他','FAST TRACK','先冷靜','我愛聽，繼續',[10,-7,3,-1],[-10,13,-4,4],7),
+E('他主動問要不要認識他的朋友。','He asks if you want to meet his friends.','社交圈開放先生','OPEN CIRCLE','太快了吧','可以認識看看',[5,-3,0,0],[-2,8,5,0],1),
+E('妳已經喝第三杯，姐妹叫妳不要再回前任。','Third drink. Bestie says stop texting your ex.','前任的聊天室','FINAL BOSS','手機交給姐妹','最後一則就好',[13,-10,12,-7],[-15,9,-13,8],2),
+E('他很會提供情緒價值，但對每個人都一樣會。','He is emotionally attentive, but equally charming with everyone.','太會聊天的他','CHARMING TYPE','我先保持清醒','會哄我就先加分',[8,-5,5,0],[-7,11,-3,3],3),
+E('他約妳下週吃飯，時間地點都先訂好了。','Next date: time and place already planned.','會做計畫的男人','PLANNER','先不要期待','這才叫約人',[5,-3,0,0],[-2,9,4,0],4),
+E('IG追蹤五千人，女生佔九成。','5K following. Mostly women.','社群很忙先生','SOCIAL BUTTERFLY','先不要','只是朋友多',[10,-6,5,0],[-8,9,-4,2],5),
+E('訊息常常消失八小時，但限動每一則都有看。','No reply for 8 hours, watches every story.','限動觀察員','ONLINE GHOST','不要浪費時間','至少有在關注？',[12,-8,5,0],[-11,8,-3,1],6),
+E('他說：「我跟女生比較聊得來。」','I just get along better with girls.','女性朋友很多的他','POPULAR TYPE','嗯，不用了','可以啊',[7,-4,3,0],[-5,7,-4,0],7),
+E('喝醉之後，他第一個想到的是幫妳叫車。','When drunk, he makes sure you get a ride home.','安全下莊先生','SAFE RIDE','這是基本','今晚加十分',[4,-2,1,-2],[-2,9,5,-4],0),
+E('他說自己從來不吃醋，因為「不在乎那些」。','Never jealous because he does not care about that stuff.','佛系先生','TOO CHILL','聽起來怪怪的','成熟吧',[8,-5,3,0],[-5,6,-2,0],1),
+E('第一次見面就問妳住哪一區，而且追問得很細。','First meeting, asks exactly where you live.','戶籍調查員','TOO CURIOUS','不要回答','只是聊天',[12,-8,5,0],[-12,5,-5,1],2),
+E('他跟前任分手才兩週。','His breakup was two weeks ago.','剛恢復單身先生','FRESH BREAKUP','先不要碰','我又不是要結婚',[10,-6,4,0],[-8,9,-3,3],3),
+E('他說：「我媽會很喜歡妳。」你們認識四天。','My mom would love you. Day four.','見家長快轉先生','SPEED RUN','太快了','有眼光',[9,-6,2,0],[-8,10,-2,1],4),
+E('他不太會說甜話，但每次都真的出現。','Not sweet with words, but always shows up.','行動派先生','CONSISTENT TYPE','沒感覺','行動比較重要',[4,-3,0,0],[-1,9,4,0],5),
+E('每次約會都說「妳決定就好」，從來沒有意見。','Every date: you decide. Always.','隨便都好先生','PASSIVE TYPE','我不要當企劃','好配合也不錯',[7,-4,2,0],[-4,5,-2,0],6),
+E('他很帥，但拍照永遠不露正臉。','Very hot. Never shows his face online.','神秘帳號先生','NO FACE ONLINE','可疑','低調而已',[8,-6,3,0],[-6,9,-2,1],7),
+E('妳說不舒服，他立刻停下來問妳還好嗎。','You feel uncomfortable. He immediately checks in.','有界線感的他','RESPECTFUL TYPE','本來就應該','值得加分',[4,-2,1,0],[-1,10,5,0],0),
+E('他跟妳說：「不要跟妳姐妹講我們的事。」','Do not tell your besties about us.','秘密先生','KEEP IT SECRET','一定有鬼','想低調吧',[13,-9,12,0],[-14,9,-12,1],1),
+E('他的手機密碼是前任生日。','His phone password is his ex’s birthday.','忘記改密碼先生','EX DETECTED','下一位謝謝','可能懶得改',[13,-10,5,0],[-12,8,-5,1],2),
+E('他願意陪妳去妳想去、但他沒興趣的地方。','He joins something you love even if it is not his thing.','願意陪妳的他','EFFORT TYPE','不用勉強','這很可以',[3,-2,0,0],[-2,10,5,0],3),
+E('他說所有星座都不準，但問完妳生日後去查合盤。','Zodiac is nonsense, then checks your compatibility.','嘴硬先生','SECRETLY INVESTED','幼稚','有點可愛',[3,-3,1,0],[-2,8,3,0],4),
+E('他喝了兩杯就開始叫妳寶貝。','Two drinks in and you are already baby.','兩杯寶貝先生','DRUNK FLIRT','清醒再說','今晚先聽著',[8,-6,3,-2],[-7,10,-3,6],5),
+E('妳朋友喝醉，他主動幫忙照顧，沒有嫌麻煩。','Your friend gets drunk. He helps without complaining.','姐妹認證候選人','BESTIE APPROVED','先觀察','直接加分',[3,-2,3,-1],[-1,8,10,-2],6),
+E('他說自己「不太用IG」，但每天上線。','He barely uses IG. He is online every day.','不太用IG先生','DIGITAL MYSTERY','話術太熟','可能只是滑',[8,-5,3,0],[-5,5,-2,0],7),
+E('第一次約會他完全不碰手機。','No phone at all during the first date.','專心約會先生','PRESENT TYPE','也許只是沒電','這很可以',[2,-2,0,0],[-1,9,4,0],0),
+E('他說：「妳不要想太多，我們順其自然。」','Do not overthink it. Let us see where it goes.','順其自然先生','AMBIGUOUS TYPE','翻譯：不負責','先享受當下',[11,-8,6,0],[-10,9,-5,3],1),
+E('他會記得妳姐妹的名字。','He remembers your besties names.','記得姐妹先生','DETAIL ORIENTED','記性好而已','很可以',[2,-2,2,0],[-1,8,8,0],2),
+E('他說今晚只喝一杯，結果陪妳待到最後。','One drink became staying until the end with you.','陪到最後先生','LAST CALL','不要暈','我已經暈了',[6,-5,2,-1],[-7,12,3,6],3),
+E('他從來不主動約，但妳約他每次都來。','Never initiates, always accepts your invite.','被動出席先生','LOW INITIATIVE','沒誠意','至少都有來',[8,-6,2,0],[-6,7,-2,0],4),
+E('他跟妳說他不想浪費妳的時間，所以目前只想當朋友。','He clearly says he only wants friendship.','誠實先生','CLEAR BOUNDARY','那就朋友','誠實反而加分',[6,-5,0,0],[4,4,3,0],5),
+E('他很帥、很會聊、很有禮貌，但妳就是覺得哪裡怪怪的。','Hot, charming, polite. Something still feels off.','直覺警報先生','GUT FEELING','相信直覺','再給一次機會',[10,-6,6,0],[-10,10,-5,2],6),
+E('姐妹都回家了，他問妳要不要再去下一攤。','Besties went home. He asks for one more stop.','下一攤先生','AFTER HOURS','今晚到這裡','走啊',[10,-6,8,-6],[-12,12,-8,10],7),
+E('他說：「妳今天很好看。」然後沒有補任何奇怪的話。','You look great. No weird follow-up.','正常稱讚先生','SIMPLE WIN','謝謝就好','這句可以',[2,-1,0,0],[-1,7,2,0],0)
 ];
-let deck=[],index=0,green=0,red=0,startX=0,dx=0,dragging=false;
-const card=document.getElementById('card'),redStamp=document.getElementById('redStamp'),greenStamp=document.getElementById('greenStamp');
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function boot(){deck=shuffle([...cards]).slice(0,12);document.getElementById('total').textContent=deck.length;setTimeout(()=>{document.getElementById('shuffle').classList.add('hidden');render()},1850)}
-function render(){if(index>=deck.length)return finish();const x=deck[index];document.getElementById('current').textContent=index+1;document.getElementById('cardNo').textContent='#'+String(index+1).padStart(3,'0');document.getElementById('question').textContent=x[0];document.getElementById('questionEn').textContent=x[1];card.className='card';card.style.transform='';redStamp.style.opacity=0;greenStamp.style.opacity=0}
-function start(e){if(index>=deck.length)return;dragging=true;startX=(e.touches?e.touches[0].clientX:e.clientX);dx=0;card.classList.add('dragging')}
-function move(e){if(!dragging)return;const x=(e.touches?e.touches[0].clientX:e.clientX);dx=x-startX;const rot=dx/14;card.style.transform=`translateX(${dx}px) rotate(${rot}deg)`;const p=Math.min(Math.abs(dx)/110,1);if(dx<0){redStamp.style.opacity=p;greenStamp.style.opacity=0}else{greenStamp.style.opacity=p;redStamp.style.opacity=0}if(e.cancelable)e.preventDefault()}
-function endDrag(){if(!dragging)return;dragging=false;card.classList.remove('dragging');if(Math.abs(dx)>95){choose(dx>0?'green':'red')}else{card.style.transform='';redStamp.style.opacity=0;greenStamp.style.opacity=0}}
-function choose(side){if(side==='green'){green++;greenStamp.style.opacity=1;card.classList.add('fly-right')}else{red++;redStamp.style.opacity=1;card.classList.add('fly-left')}setTimeout(()=>{index++;render()},360)}
-function finish(){const pct=Math.round(green/deck.length*100);document.getElementById('score').textContent=pct+'% GREEN';let t=pct>=70?'妳的 Green Flag 雷達很寬容。':pct>=40?'妳還算有原則，但帥的可能例外。':'Red Flag 雷達全開。今晚很安全。';document.getElementById('endingTitle').textContent=t;document.getElementById('summary').innerHTML=`GREEN FLAG：${green} 張<br>RED FLAG：${red} 張<br><br>這是隱藏互動原型，可再改成「任務牌」、「男友牌」或整點 MC 版本。`;document.getElementById('end').classList.remove('hidden')}
-function restartGame(){index=green=red=0;document.getElementById('end').classList.add('hidden');document.getElementById('shuffle').classList.remove('hidden');boot()}
-card.addEventListener('mousedown',start);window.addEventListener('mousemove',move);window.addEventListener('mouseup',endDrag);card.addEventListener('touchstart',start,{passive:true});card.addEventListener('touchmove',move,{passive:false});card.addEventListener('touchend',endDrag);document.getElementById('redBtn').onclick=()=>choose('red');document.getElementById('greenBtn').onclick=()=>choose('green');boot();
-</script>
-</body>
-</html>
+let deck=[],i=0,stats=[50,50,50,50],sx=0,dx=0,drag=false;const card=document.getElementById('card'),rs=document.getElementById('rs'),gs=document.getElementById('gs'),portrait=document.getElementById('portrait');function sh(a){for(let k=a.length-1;k>0;k--){let j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a}function boot(){deck=sh([...events]).slice(0,15);i=0;stats=[50,50,50,50];meters();setTimeout(()=>{document.getElementById('shuffle').classList.add('hidden');render()},1750)}function render(){if(i>=deck.length)return finish();let x=deck[i],v=looks[x.v%looks.length];q.textContent=x.q;qe.textContent=x.e;name.textContent=x.n;role.textContent=x.r;count.textContent=(i+1)+' / '+deck.length;preview.textContent='左右拖動卡牌做決定';card.className='card';card.style.transform='';rs.style.opacity=gs.style.opacity=0;portrait.style.setProperty('--skin',v.skin);portrait.style.setProperty('--hair',v.hair);portrait.style.setProperty('--shirt',v.shirt);portrait.style.setProperty('--sc1',v.sc1);portrait.style.setProperty('--sc2',v.sc2);portrait.style.setProperty('--moon',v.moon);portrait.style.setProperty('--hairshape',v.shape);acc.textContent=v.acc}function meters(){stats.forEach((v,k)=>{stats[k]=Math.max(5,Math.min(95,v));document.getElementById('m'+k).style.width=stats[k]+'%'})}function start(e){drag=true;sx=(e.touches?e.touches[0].clientX:e.clientX);dx=0;card.classList.add('drag')}function move(e){if(!drag)return;let x=(e.touches?e.touches[0].clientX:e.clientX);dx=x-sx;card.style.transform=`translateX(${dx}px) rotate(${dx/16}deg)`;let p=Math.min(Math.abs(dx)/100,1);if(dx<0){rs.style.opacity=p;gs.style.opacity=0;preview.textContent=deck[i].l}else{gs.style.opacity=p;rs.style.opacity=0;preview.textContent=deck[i].g}if(e.cancelable)e.preventDefault()}function stop(){if(!drag)return;drag=false;card.classList.remove('drag');if(Math.abs(dx)>90)choose(dx>0);else{card.style.transform='';rs.style.opacity=gs.style.opacity=0;preview.textContent='左右拖動卡牌做決定'}}function choose(right){let x=deck[i],d=right?x.G:x.L;stats=stats.map((v,k)=>v+d[k]);meters();card.classList.add(right?'right':'left');setTimeout(()=>{i++;render()},370)}function finish(){let [mind,heart,bestie,drink]=stats;let title=mind<30?'姐妹請看好我。':heart>75?'戀愛腦已上線。':bestie<30?'今晚妳選男人，不選姐妹。':drink>75?'微醺決策模式。':mind>75?'理智派安全下莊。':'今晚安全下莊。';ending.textContent=title;result.innerHTML=`理智 ${mind}%　心動 ${heart}%<br>姐妹 ${bestie}%　酒量 ${drink}%<br><br>LOVE, LIES & RED FLAGS.`;end.classList.remove('hidden')}function restart(){end.classList.add('hidden');shuffle.classList.remove('hidden');boot()}card.addEventListener('mousedown',start);window.addEventListener('mousemove',move);window.addEventListener('mouseup',stop);card.addEventListener('touchstart',start,{passive:true});card.addEventListener('touchmove',move,{passive:false});card.addEventListener('touchend',stop);boot();</script></body></html>
