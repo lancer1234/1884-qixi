@@ -1,0 +1,79 @@
+name: Refine 1884 Story Card
+
+on:
+  push:
+    paths:
+      - '.github/workflows/refine-story.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare official 1884 logo
+        run: |
+          python -m pip install --quiet pillow
+          curl -L --fail --retry 3 -o /tmp/1884-logo-source.png https://1884.com.tw/1884-logo-transparent.png
+          python - <<'PY'
+          from PIL import Image
+          import numpy as np
+          img=Image.open('/tmp/1884-logo-source.png').convert('RGBA')
+          a=np.array(img)
+          rgb=a[:,:,:3]
+          white=np.all(rgb>242,axis=2)
+          a[:,:,3][white]=0
+          out=Image.fromarray(a)
+          alpha=np.array(out)[:,:,3]
+          ys,xs=np.where(alpha>12)
+          out=out.crop((xs.min(),ys.min(),xs.max()+1,ys.max()+1))
+          if out.width>520:
+              h=round(out.height*520/out.width)
+              out=out.resize((520,h),Image.Resampling.LANCZOS)
+          out.save('1884-logo.png',optimize=True)
+          PY
+      - name: Refine web app and Story output
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          h=p.read_text(encoding='utf-8')
+          h=h.replace('https://1884.com.tw/1884-logo-transparent.png','1884-logo.png')
+          h=h.replace('<div class="actions"><button onclick="shareStory()">分享／儲存<span class="english">SHARE / SAVE</span></button><button class="primary" onclick="downloadStory()">下載限動圖<span class="english">DOWNLOAD STORY</span></button></div>', '<div class="actions"><button class="primary" onclick="shareStory()">分享／儲存<span class="english">SHARE / SAVE</span></button></div>')
+          new_draw=r'''function drawStory(r,status,sis){
+            const c=storyCanvas,ctx=c.getContext('2d'),W=1080,H=1920;
+            const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#070707');bg.addColorStop(.5,'#110d0d');bg.addColorStop(1,'#060606');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+            const g1=ctx.createRadialGradient(875,255,20,875,255,630);g1.addColorStop(0,'rgba(151,103,103,.18)');g1.addColorStop(1,'rgba(151,103,103,0)');ctx.fillStyle=g1;ctx.fillRect(0,0,W,900);
+            const g2=ctx.createRadialGradient(160,1490,20,160,1490,560);g2.addColorStop(0,'rgba(201,171,120,.07)');g2.addColorStop(1,'rgba(201,171,120,0)');ctx.fillStyle=g2;ctx.fillRect(0,1050,W,870);
+            ctx.strokeStyle='rgba(214,183,126,.43)';ctx.lineWidth=2;ctx.strokeRect(68,68,944,1784);ctx.strokeStyle='rgba(214,183,126,.10)';ctx.lineWidth=1;ctx.strokeRect(84,84,912,1752);
+            ctx.strokeStyle='rgba(214,183,126,.78)';ctx.lineWidth=2;[[68,68,52,0],[68,68,0,52],[1012,68,-52,0],[1012,68,0,52],[68,1852,52,0],[68,1852,0,-52],[1012,1852,-52,0],[1012,1852,0,-52]].forEach(([x,y,dx,dy])=>{ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+dx,y+dy);ctx.stroke()});
+            const img=new Image();
+            img.onload=()=>{const mw=250,mh=195,s=Math.min(mw/img.width,mh/img.height),dw=img.width*s,dh=img.height*s;ctx.globalAlpha=.98;ctx.drawImage(img,(W-dw)/2,105,dw,dh);ctx.globalAlpha=1;render()};
+            img.onerror=()=>render();img.src='1884-logo.png';
+            function cw(text,y,font,color,w,lh,max=5){ctx.textAlign='center';ctx.font=font;ctx.fillStyle=color;let line='',lines=[];for(const ch of [...text]){let t=line+ch;if(ctx.measureText(t).width>w&&line){lines.push(line);line=ch}else line=t}if(line)lines.push(line);lines=lines.slice(0,max);lines.forEach((l,i)=>ctx.fillText(l,W/2,y+i*lh));return y+lines.length*lh}
+            function render(){
+              ctx.textAlign='center';ctx.fillStyle='#d5b36f';ctx.font='500 22px sans-serif';ctx.fillText('七夕限定',W/2,344);ctx.fillStyle='#9e9087';ctx.font='20px Georgia';ctx.fillText("CHINESE VALENTINE'S NIGHT",W/2,380);
+              ctx.strokeStyle='rgba(214,183,126,.27)';ctx.beginPath();ctx.moveTo(360,425);ctx.lineTo(720,425);ctx.stroke();ctx.fillStyle='#8f837b';ctx.font='18px Georgia';ctx.fillText('LOVE CHECK-UP',W/2,472);ctx.fillStyle='#c4b9af';ctx.font='20px sans-serif';ctx.fillText('感情診斷',W/2,507);
+              let y=635;y=cw(r.cn,y,'500 56px serif','#f1ebe4',790,76,4);y+=24;y=cw(r.en,y,'27px Georgia','#aa9c93',790,38,3);y+=72;ctx.fillStyle='#d3ada7';ctx.font='26px sans-serif';ctx.fillText(status[0],W/2,y);ctx.fillStyle='#7f746e';ctx.font='19px Georgia';ctx.fillText(status[1],W/2,y+36);
+              const sx=190,sw=700,sy=y+105;ctx.fillStyle='rgba(255,255,255,.018)';ctx.fillRect(sx,sy,sw,260);ctx.strokeStyle='rgba(214,183,126,.18)';ctx.strokeRect(sx,sy,sw,260);ctx.textAlign='left';ctx.fillStyle='#d5b36f';ctx.font='500 19px sans-serif';ctx.fillText('目前症狀',sx+42,sy+48);ctx.fillStyle='#8b817b';ctx.font='16px Georgia';ctx.fillText('CURRENT SYMPTOMS',sx+42,sy+76);ctx.font='25px sans-serif';let iy=sy+126;
+              if(sis.length){sis.slice(0,3).forEach(s=>{ctx.fillStyle='#d5b36f';ctx.fillText('✓',sx+44,iy);ctx.fillStyle='#eee8e1';ctx.fillText(s[0],sx+82,iy);iy+=47})}else{ctx.fillStyle='#eee8e1';ctx.fillText('目前無明顯症狀',sx+44,iy)}
+              let py=sy+330;ctx.textAlign='center';ctx.fillStyle='#d5b36f';ctx.font='500 19px sans-serif';ctx.fillText('今晚處方',W/2,py);ctx.fillStyle='#8b817b';ctx.font='17px Georgia';ctx.fillText("TODAY'S PRESCRIPTION",W/2,py+31);ctx.strokeStyle='rgba(214,183,126,.25)';ctx.beginPath();ctx.moveTo(305,py+66);ctx.lineTo(775,py+66);ctx.stroke();py+=120;py=cw(r.rx,py,'600 37px sans-serif','#f1ebe4',760,54,4);py+=22;cw(r.rxen,py,'22px Georgia','#93867f',760,33,4);
+              ctx.textAlign='center';ctx.fillStyle='#5f5752';ctx.font='18px Georgia';ctx.fillText('1884 TAIPEI',W/2,1773);ctx.fillStyle='#7e6d59';ctx.font='16px sans-serif';ctx.fillText('七夕限定',W/2,1806);
+            }
+          }'''
+          h=re.sub(r'function drawStory\(r,status,sis\)\{.*?\nfunction downloadStory\(\)', new_draw+'\nfunction downloadStory()', h, flags=re.S)
+          p.write_text(h,encoding='utf-8')
+          PY
+      - name: Commit refinements
+        run: |
+          git config user.name '1884 Web App Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html 1884-logo.png
+          git diff --cached --quiet || git commit -m 'Refine Story card and embed official logo'
+          git push
