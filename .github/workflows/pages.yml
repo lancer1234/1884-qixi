@@ -31,11 +31,31 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
+
           p = Path('_site/index.html')
           s = p.read_text(encoding='utf-8')
+
+          # Keep all logo assets on the same GitHub Pages origin.
           s = s.replace('https://1884.com.tw/1884-logo-transparent.png', './1884-logo-story.svg')
           s = re.sub(r'const storyLogoData="[^"]*";', 'const storyLogoData="./1884-logo-story.svg";', s)
-          s = re.sub(r'logo\.src="data:image/png;base64,[^"]+";', 'logo.src="./1884-logo-story.svg";', s)
+
+          # Decorative layers must never capture taps/clicks on Safari/mobile.
+          touch_fix = '''
+          <style id="touch-fix">
+            body::before,
+            .hero::after,
+            .card::before,
+            .card::after { pointer-events:none !important; }
+            .menu, .menu button,
+            .options, .option,
+            .option input,
+            .actions, .actions button,
+            textarea { position:relative; z-index:5; pointer-events:auto !important; }
+            .option { touch-action:manipulation; -webkit-tap-highlight-color:rgba(214,183,126,.12); }
+            button { touch-action:manipulation; }
+          </style>
+          '''
+          s = s.replace('</head>', touch_fix + '\n</head>')
           p.write_text(s, encoding='utf-8')
           PY
 
