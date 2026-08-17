@@ -20,61 +20,47 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare site and validate JavaScript
+      - name: Prepare site
         run: |
+          rm -rf _site
           mkdir -p _site
-          cp index.html _site/index.html
+          rsync -a ./ _site/ \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude '_site/' \
+            --exclude 'google-apps-script/'
+
+          test -f _site/index.html
+          test -f _site/ex-recycling-config.js
+          test -f _site/ex-recycling-client.js
+
+      - name: Validate JavaScript
+        run: |
           python - <<'PY'
           from pathlib import Path
           import re
 
-          LOGO_DATA = "data:image/png;base64,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"
+          html = Path('_site/index.html').read_text(encoding='utf-8')
+          blocks = re.findall(r'<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>', html, flags=re.S | re.I)
+          if not blocks:
+              raise SystemExit('No inline script block found')
 
-          p = Path('_site/index.html')
-          s = p.read_text(encoding='utf-8')
-
-          s = s.replace('https://1884.com.tw/1884-logo-transparent.png', LOGO_DATA)
-          s = s.replace('./1884-logo-story.svg', LOGO_DATA)
-          s = s.replace('./1884-logo-story.png', LOGO_DATA)
-          s = re.sub(r'const storyLogoData="[^"]*";', 'const storyLogoData="' + LOGO_DATA + '";', s)
-
-          # Keep the known Safari parse fix in case an older source version is checked out.
-          s = s.replace('ctx.fillText("七夕限定",540,1803)}}}', 'ctx.fillText("七夕限定",540,1803)}}')
-
-          touch_fix = '''
-          <style id="touch-fix">
-            body::before,
-            .hero::after,
-            .card::before,
-            .card::after { pointer-events:none !important; }
-            .menu, .menu button,
-            .options, .option,
-            .option input,
-            .actions, .actions button,
-            textarea { position:relative; z-index:5; pointer-events:auto !important; }
-            .option { touch-action:manipulation; -webkit-tap-highlight-color:rgba(214,183,126,.12); }
-            button { touch-action:manipulation; }
-          </style>
-          '''
-          if 'id="touch-fix"' not in s:
-              s = s.replace('</head>', touch_fix + '\n</head>')
-          p.write_text(s, encoding='utf-8')
+          for i, block in enumerate(blocks):
+              Path(f'/tmp/inline-{i}.js').write_text(block, encoding='utf-8')
+          print(f'Found {len(blocks)} inline script block(s)')
           PY
 
-          python - <<'PY'
-          from pathlib import Path
-          import re
-          s = Path('_site/index.html').read_text(encoding='utf-8')
-          m = re.search(r'<script>(.*)</script>', s, re.S)
-          if not m:
-              raise SystemExit('No script block found')
-          Path('/tmp/app.js').write_text(m.group(1), encoding='utf-8')
-          PY
-          node --check /tmp/app.js
+          for f in /tmp/inline-*.js; do
+            node --check "$f"
+          done
+
+          node --check _site/ex-recycling-config.js
+          node --check _site/ex-recycling-client.js
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
