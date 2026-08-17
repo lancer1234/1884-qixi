@@ -1,1 +1,210 @@
-REPLACE_WITH_LOCAL_FILE_CONTENT
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070707">
+<title>1884 七夕｜LOVE, LIES & RED FLAGS.</title>
+<style>
+:root{
+  --black:#070707;
+  --ink:#0d0c0c;
+  --panel:#12100f;
+  --panel2:#171413;
+  --ivory:#eee8df;
+  --muted:#a69c92;
+  --champagne:#c9ab78;
+  --gold:#d6b77e;
+  --rose:#9a6b6b;
+  --rose2:#704647;
+  --line:rgba(214,183,126,.23);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--black);color:var(--ivory);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,BlinkMacSystemFont,sans-serif}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 84% 8%,rgba(154,107,107,.14),transparent 27%),
+    radial-gradient(circle at 10% 75%,rgba(201,171,120,.08),transparent 31%),
+    #070707;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.23;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);
+  background-size:38px 38px;
+}
+.app{max-width:560px;margin:0 auto;min-height:100vh;padding:20px 18px 44px;position:relative}
+.brand{text-align:center;padding:22px 0 16px}
+.brand-logo{width:150px;height:auto;display:block;margin:0 auto 8px;filter:drop-shadow(0 0 16px rgba(214,183,126,.08))}
+.cn-title{font-family:"Noto Serif TC","Songti TC","PMingLiU",Georgia,serif;font-size:27px;letter-spacing:.18em;margin-left:.18em}
+.en-sub{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.18em;color:var(--champagne);margin-top:8px;text-transform:uppercase}
+.theme-line{font-family:"Noto Serif TC","Songti TC",Georgia,serif;color:#cdbdb5;font-size:14px;margin-top:13px;line-height:1.65}
+.theme-line small{display:block;font-family:Georgia,serif;color:#8d827a;letter-spacing:.08em;margin-top:2px}
+.hero{
+  position:relative;border:1px solid var(--line);min-height:182px;margin:12px 0 18px;overflow:hidden;
+  background-image:linear-gradient(90deg,rgba(4,4,4,.98) 0%,rgba(5,5,5,.82) 48%,rgba(5,5,5,.25) 100%);
+  background-size:cover;background-position:center;
+}
+.hero:after{content:"";position:absolute;inset:10px;border:1px solid rgba(214,183,126,.19);pointer-events:none}
+.hero-copy{position:relative;z-index:2;padding:30px 28px;max-width:78%}
+.hero-kicker{font-size:10px;letter-spacing:.25em;color:var(--gold)}
+.hero h1{font-family:"Noto Serif TC","Songti TC",Georgia,serif;font-weight:500;font-size:26px;line-height:1.45;letter-spacing:.06em;margin:12px 0 8px}
+.hero p{font-size:12px;color:#b7afa8;margin:0;line-height:1.65}
+.card{background:linear-gradient(155deg,rgba(19,17,16,.97),rgba(10,10,10,.97));border:1px solid var(--line);padding:19px;margin:13px 0;position:relative}
+.card:before{content:"";position:absolute;top:8px;right:8px;width:18px;height:18px;border-top:1px solid rgba(214,183,126,.35);border-right:1px solid rgba(214,183,126,.35)}
+.card:after{content:"";position:absolute;left:8px;bottom:8px;width:18px;height:18px;border-left:1px solid rgba(214,183,126,.24);border-bottom:1px solid rgba(214,183,126,.24)}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu button{min-height:150px;text-align:left;padding:17px}
+button,.btn{border:1px solid rgba(214,183,126,.28);background:#11100f;color:var(--ivory);padding:14px 15px;font:inherit;cursor:pointer;border-radius:0;transition:.18s ease}
+button:hover{border-color:rgba(214,183,126,.65);background:#171411}
+button.primary{background:linear-gradient(135deg,#5f3c3d,#8b5d5e);border-color:#9f7770;color:#fff}
+.menu .index{font-family:Georgia,serif;color:var(--gold);font-size:11px;letter-spacing:.12em;display:block;margin-bottom:22px}
+.menu strong{font-family:"Noto Serif TC","Songti TC",Georgia,serif;font-weight:500;font-size:17px;display:block;letter-spacing:.05em}
+.menu small{display:block;color:var(--muted);font-family:Georgia,serif;font-size:11px;line-height:1.45;margin-top:7px}
+.screen{display:none}.screen.active{display:block}
+.topbar{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:5px 0 14px;margin-bottom:16px}
+.topbar .back{border:0;background:transparent;padding:8px 10px 8px 0;color:var(--gold)}
+.topbar b{font-family:"Noto Serif TC","Songti TC",Georgia,serif;font-weight:500;font-size:15px}
+.topbar small{display:block;color:var(--muted);font-family:Georgia,serif;font-size:10px;letter-spacing:.08em;margin-top:2px}
+h2,h3{font-family:"Noto Serif TC","Songti TC",Georgia,serif;font-weight:500;letter-spacing:.04em}
+h2{font-size:22px;margin:0 0 8px}
+p{color:#bbb1a9;line-height:1.7}
+.english{display:block;font-family:Georgia,serif;color:var(--muted);font-size:11px;letter-spacing:.08em;margin-top:4px}
+.options{display:grid;gap:8px}
+.option{display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(214,183,126,.13);padding:13px 2px;cursor:pointer}
+.option:last-child{border-bottom:0}
+.option input{margin-top:3px;accent-color:var(--rose)}
+.option b{font-weight:500;font-size:14px}
+.option small{display:block;color:#8f8781;margin-top:4px;font-size:10px;font-family:Georgia,serif}
+.hr{height:1px;background:var(--line);margin:22px 0}
+.actions{display:flex;gap:9px;margin-top:18px}.actions>*{flex:1}
+.result{text-align:center;padding:30px 18px}
+.eyebrow{font-size:10px;letter-spacing:.22em;color:var(--gold)}
+.result .diagnosis{font-family:"Noto Serif TC","Songti TC",Georgia,serif;font-size:30px;line-height:1.25;margin:15px 0;color:#f4ede5}
+.result .diagnosis-en{font-family:Georgia,serif;color:#b8a89b;font-size:13px;letter-spacing:.08em;margin-top:-6px;margin-bottom:14px}
+.prescription{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.badge{display:inline-block;border:1px solid rgba(214,183,126,.25);padding:7px 9px;font-size:11px;color:#d8d0c9;margin:4px}
+.status-pill{display:inline-block;border:1px solid rgba(154,107,107,.55);padding:7px 10px;color:#d5b5b2;font-size:11px}
+.mission{font-family:"Noto Serif TC","Songti TC",Georgia,serif;font-size:25px;line-height:1.45;margin:30px 0 10px}
+.mission-en{font-family:Georgia,serif;font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:24px}
+textarea{width:100%;min-height:160px;background:#0b0a0a;border:1px solid var(--line);color:#eee8df;padding:14px;font:inherit;border-radius:0;resize:vertical}
+.note{font-size:11px;color:#847c76;line-height:1.6;margin-top:11px}
+.story-preview{width:100%;aspect-ratio:9/16;border:1px solid var(--line);overflow:hidden;background:#080808;margin:16px 0}
+.story-preview canvas{width:100%;height:100%;display:block}
+.footer{text-align:center;color:#625b55;font-family:Georgia,serif;font-size:10px;letter-spacing:.12em;padding-top:27px}
+.split-title{margin-bottom:16px}
+.split-title .cn{font-family:"Noto Serif TC","Songti TC",Georgia,serif;font-size:22px}
+.split-title .en{font-family:Georgia,serif;font-size:11px;letter-spacing:.12em;color:var(--gold);margin-top:4px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);background:#e7ddcf;color:#171311;padding:10px 14px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:30}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:390px){.menu{grid-template-columns:1fr}.menu button{min-height:118px}.hero-copy{max-width:88%}}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="home" class="screen active">
+  <div class="brand">
+    <img class="brand-logo" src="https://1884.com.tw/1884-logo-transparent.png" alt="1884 Taipei Logo">
+    <div class="cn-title">七夕</div>
+    <div class="en-sub">Chinese Valentine's Night</div>
+    <div class="theme-line">愛、謊言與感情警訊<small>LOVE, LIES &amp; RED FLAGS.</small></div>
+  </div>
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="hero-kicker">1884 · 七夕限定</div>
+      <h1>今晚，先別急著相信愛情。</h1>
+      <p>從感情診斷、秘密任務，到前任回收站。選一個，看看今晚會留下什麼。</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="split-title"><div class="cn">今晚想先玩什麼？</div><div class="en">CHOOSE YOUR EXPERIENCE</div></div>
+    <div class="menu">
+      <button onclick="go('checkup')"><span class="index">01</span><strong>感情診斷</strong><small>LOVE CHECK-UP</small></button>
+      <button onclick="go('mission')"><span class="index">02</span><strong>秘密任務</strong><small>SECRET MISSION</small></button>
+      <button onclick="go('exbin')"><span class="index">03</span><strong>前任回收站</strong><small>EX RECYCLING BIN</small></button>
+      <button onclick="go('redflag')"><span class="index">04</span><strong>感情警訊測驗</strong><small>RED FLAG TEST</small></button>
+    </div>
+  </div>
+  <div class="footer">1884 TAIPEI · 七夕限定體驗 / CHINESE VALENTINE'S SPECIAL</div>
+</section>
+<section id="checkup" class="screen">
+  <div class="topbar"><button class="back" onclick="go('home')">←</button><div><b>感情診斷</b><small>LOVE CHECK-UP</small></div></div>
+  <div class="card">
+    <div class="split-title"><div class="cn">目前感情狀況</div><div class="en">CURRENT RELATIONSHIP STATUS</div></div>
+    <div class="options" id="statusOptions"></div>
+    <div class="hr"></div>
+    <div class="split-title"><div class="cn">目前症狀</div><div class="en">CURRENT SYMPTOMS</div></div>
+    <div class="options" id="symptomOptions"></div>
+    <div class="actions"><button class="primary" onclick="diagnose()">開始診斷<br><span class="english" style="color:#eadbd5">DIAGNOSE ME</span></button></div>
+  </div>
+</section>
+<section id="checkResult" class="screen">
+  <div class="topbar"><button class="back" onclick="go('checkup')">←</button><div><b>診斷結果</b><small>YOUR DIAGNOSIS</small></div></div>
+  <div class="card result">
+    <div class="eyebrow">1884 七夕 · LOVE CHECK-UP / 感情診斷</div>
+    <div id="resultTitle" class="diagnosis"></div>
+    <div id="resultTitleEn" class="diagnosis-en"></div>
+    <div id="resultStatus" class="status-pill"></div>
+    <div id="resultSymptoms" style="margin-top:14px"></div>
+    <div class="prescription"><div class="eyebrow">今晚處方 · TODAY'S PRESCRIPTION</div><p id="resultRx" style="font-size:15px;color:#efe8e1;margin-bottom:3px"></p><small id="resultRxEn" class="english"></small></div>
+  </div>
+  <div class="story-preview"><canvas id="storyCanvas" width="1080" height="1920"></canvas></div>
+  <div class="actions"><button class="primary" onclick="shareStory()">分享／儲存<span class="english" style="color:#eadbd5">SHARE / SAVE</span></button></div>
+</section>
+<section id="mission" class="screen">
+  <div class="topbar"><button class="back" onclick="go('home')">←</button><div><b>秘密任務</b><small>SECRET MISSION</small></div></div>
+  <div class="card result">
+    <div class="eyebrow">今晚的秘密任務 · TONIGHT'S SECRET MISSION</div>
+    <div id="missionText" class="mission">按下按鈕，抽取今晚的任務。</div>
+    <div id="missionTextEn" class="mission-en">Tap below to receive tonight's mission.</div>
+    <div class="actions"><button class="primary" onclick="newMission()">抽取任務<span class="english" style="color:#eadbd5">GIVE ME A MISSION</span></button></div>
+    <div class="actions"><button onclick="missionDone()">任務完成 ✓<span class="english">MISSION COMPLETE</span></button></div>
+    <div id="completedWrap" style="display:none;margin-top:28px;text-align:left"><div class="hr"></div><div class="split-title"><div class="cn" style="font-size:18px">今晚已完成</div><div class="en">COMPLETED TONIGHT</div></div><div id="completedMissions"></div></div>
+  </div>
+</section>
+<section id="exbin" class="screen">
+  <div class="topbar"><button class="back" onclick="go('home')">←</button><div><b>前任回收站</b><small>EX RECYCLING BIN</small></div></div>
+  <div class="card">
+    <h2>七夕之前，有些東西該丟了。</h2><span class="english">LEAVE IT HERE BEFORE TONIGHT ENDS.</span>
+    <p>匿名寫下妳遇過最大的感情警訊、最想對前任說的一句話，或一段荒謬到值得留下的故事。</p>
+    <textarea id="exText" maxlength="300" placeholder="匿名寫在這裡，不需要留下名字。"></textarea>
+    <div class="actions"><button class="primary" onclick="submitEx()">丟掉它 →<span class="english" style="color:#eadbd5">THROW IT AWAY</span></button></div>
+    <div class="note">現場同時保留實體「前任回收站」。網頁與實體雙軌並行，避免網路或設備異常影響活動。</div>
+  </div>
+  <div id="exSuccess" class="card result" style="display:none"><div class="eyebrow">回收完成 · SUCCESSFULLY RECYCLED</div><div class="diagnosis">丟掉了，就別再撿回來。</div><div class="diagnosis-en">DON'T PICK IT UP AGAIN.</div></div>
+</section>
+<section id="redflag" class="screen">
+  <div class="topbar"><button class="back" onclick="go('home')">←</button><div><b>感情警訊測驗</b><small>RED FLAG TEST</small></div></div>
+  <div class="card">
+    <div class="split-title"><div class="cn">妳到底看不看得到感情警訊？</div><div class="en">CAN YOU SEE THE RED FLAGS?</div></div>
+    <div id="rfQuestions"></div>
+    <div class="actions"><button class="primary" onclick="scoreRedFlag()">查看結果<span class="english" style="color:#eadbd5">SHOW MY SCORE</span></button></div>
+    <div id="rfResult" class="result" style="display:none"></div>
+  </div>
+</section>
+</div>
+<div id="toast" class="toast"></div>
+<script>
+const statuses=[["單身，而且很穩定","SINGLE & STABLE"],["有喜歡的人，觀察中","INTERESTED, STILL OBSERVING"],["曖昧中，病情不明","IT'S COMPLICATED"],["戀愛中，但今晚休假","IN LOVE, OFF DUTY TONIGHT"],["剛分手，恢復中","RECOVERY MODE"],["不方便透露","CLASSIFIED"]];
+const symptoms=[["容易暈船","FALLS TOO FAST"],["對感情警訊沒有抵抗力","LOW RED-FLAG RESISTANCE"],["明知道不行還是會喜歡","KNOWS BETTER, DOES IT ANYWAY"],["半夜想傳訊息給前任","LATE-NIGHT EX TEXTING"],["偏愛年下","YOUNGER TYPE"],["最近只喜歡帥的","VISUAL STANDARDS ONLY"]];
+const missions=[["跟今天穿得最好看的異性乾杯。","Toast with the best-dressed person of the opposite sex tonight."],["找到一個跟妳同星座的異性。","Find someone of the opposite sex who shares your zodiac sign."],["跟姐妹拍一張「看起來不像單身」的照片。","Take a photo that definitely does not look single."],["問朋友：「我前任最大的感情警訊是什麼？」","Ask your bestie: What was my ex's biggest red flag?"],["跟一個今天第一次認識的異性乾杯。","Toast with someone of the opposite sex you met for the first time tonight."],["找到一個跟妳喜歡同類型男生的人。","Find someone who shares your type."],["發一則今晚的限時動態並標記 1884。","Post tonight to your Story and tag 1884."],["跟姐妹一起完成一杯 Shot。","Finish a shot with your bestie."],["在 1884 拍一張「今晚有人約」的照片。","Take a photo that says: I had plans tonight."],["真心稱讚一位異性今天最好看的地方。","Give someone of the opposite sex one genuine compliment tonight."],["跟一位異性交換名字，然後乾杯。","Exchange names with someone of the opposite sex, then toast."],["請姐妹幫妳選現場最符合妳審美的異性。","Let your bestie pick the person of the opposite sex who best matches your type."],["找到一位比妳高的異性一起拍照。","Take a photo with someone of the opposite sex who is taller than you."],["跟姐妹一起點一杯七夕限定調酒。","Order the Valentine's special cocktail with your bestie."],["跟一位異性說：「妳／你今天很好看。」","Tell someone of the opposite sex: You look good tonight."],["找一位異性問：『你覺得最大的感情警訊是什麼？』","Ask someone of the opposite sex: What's your biggest relationship red flag?"],["讓姐妹幫妳決定下一杯喝什麼。","Let your bestie choose your next drink."],["跟一位異性比剪刀石頭布，輸的人先乾杯。","Play rock-paper-scissors with someone of the opposite sex; loser toasts first."],["拍一張只看得到酒杯、不看臉的神秘限動。","Post a mysterious Story showing only the drinks, no faces."],["跟姐妹一起選出今晚現場的最佳穿搭。","Choose tonight's best-dressed guest with your bestie."],["找一位異性完成一句話：『我的理想型一定要＿＿。』","Ask someone of the opposite sex to finish: My type has to be ____."],["跟姐妹互相說出對方最容易愛上的感情警訊。","Tell each other the red flag you're most likely to fall for."],["今晚主動跟一位異性說第一句話。","Be the first to start a conversation with someone of the opposite sex tonight."],["跟一位異性一起對鏡頭舉杯，但不用露臉。","Toast to the camera with someone of the opposite sex—faces optional."]];
+const rfQs=[["很帥，但一天只回三次訊息。","感情警訊","我可以改變他","RED FLAG","I CAN FIX HIM"],["跟前任還是最好的朋友。","下一位","沒關係吧","NEXT","IT'S FINE"],["183 公分，但很愛玩。","快跑","183？先等等","RUN","183? SAY NO MORE."],["每天都要妳報備行程。","感情警訊","他只是關心","RED FLAG","HE CARES"],["工作很忙，但見面時很會哄。","不行","我可以等","NOPE","I'LL WAIT"],["每次吵架就消失兩三天。","不接受","給他冷靜","NOT OKAY","LET HIM COOL OFF"],["手機永遠反著放，而且不讓妳碰。","很可疑","尊重隱私","SUSPICIOUS","RESPECT PRIVACY"],["IG 追蹤很多異性，但說都只是朋友。","警報響了","社交而已","ALARM ON","JUST SOCIAL"],["第一次約會就一直聊前任。","下一位","至少很誠實","NEXT","AT LEAST HONEST"],["只在半夜找妳，白天幾乎消失。","感情警訊","他只是夜貓","RED FLAG","NIGHT OWL"],["說自己不想談戀愛，但每天都做像情侶的事。","不要暈","再觀察","DON'T FALL","WAIT AND SEE"],["對服務生態度很差，但對妳超級溫柔。","直接淘汰","跟我好就好","HARD NO","HE'S NICE TO ME"],["每一任前任在他口中都有問題。","最大警訊","可能真的很衰","MAJOR RED FLAG","BAD LUCK MAYBE"],["永遠不公開妳，也不讓朋友知道妳。","有問題","他低調","SOMETHING'S OFF","HE'S PRIVATE"],["剛認識三天就說妳是他遇過最特別的人。","太快了","好浪漫","TOO FAST","SO ROMANTIC"],["喝醉後才會說喜歡妳，清醒就裝沒事。","不算","酒後吐真言","DOESN'T COUNT","DRUNK TRUTH"],["約會總是臨時約，從來不提前安排。","備胎感","隨性而已","BACKUP VIBES","SPONTANEOUS"],["很會提供情緒價值，但對每個人都一樣好。","危險","他只是暖男","DANGEROUS","HE'S JUST SWEET"],["條件全部很好，但妳的姐妹都不喜歡他。","相信姐妹","相信自己","TRUST BESTIES","TRUST MYSELF"],["他說：『妳想太多了。』而且每次都這樣。","快跑","可能真的是我","RUN","MAYBE IT'S ME"]];
+function init(){const s=document.getElementById('statusOptions');statuses.forEach((x,i)=>s.insertAdjacentHTML('beforeend',`<label class="option"><input type="radio" name="status" value="${i}"><div><b>${x[0]}</b><small>${x[1]}</small></div></label>`));const sy=document.getElementById('symptomOptions');symptoms.forEach((x,i)=>sy.insertAdjacentHTML('beforeend',`<label class="option"><input type="checkbox" name="symptom" value="${i}"><div><b>${x[0]}</b><small>${x[1]}</small></div></label>`));const rf=document.getElementById('rfQuestions');rfQs.forEach((q,i)=>rf.insertAdjacentHTML('beforeend',`<div style="padding:16px 0;border-bottom:1px solid rgba(214,183,126,.16)"><b style="font-weight:500">${i+1}. ${q[0]}</b><div class="actions"><label class="option" style="flex:1"><input type="radio" name="rf${i}" value="0"><div><b>${q[1]}</b><small>${q[3]}</small></div></label><label class="option" style="flex:1"><input type="radio" name="rf${i}" value="1"><div><b>${q[2]}</b><small>${q[4]}</small></div></label></div></div>`))}
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');scrollTo(0,0)}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
+function getDiagnosis(si,sis){let r={cn:"挑剔，不等於單身。",en:"SELECTIVE, NOT SINGLE.",rx:"朋友、酒，今晚先不要做壞決定。",rxen:"FRIENDS, DRINKS, NO BAD DECISIONS."};if(si===2||sis.includes(0)||sis.includes(1))r={cn:"今晚做出壞決定的風險偏高。",en:"HIGH RISK OF BAD DECISIONS.",rx:"姐妹留在身邊，前任留在封鎖名單。",rxen:"KEEP YOUR BESTIE CLOSE. KEEP YOUR EX BLOCKED."};if(si===4)r={cn:"恢復模式：啟動。",en:"RECOVERY MODE: ON.",rx:"不要回訊息。今晚只負責好好玩。",rxen:"NO TEXTING BACK. HAVE ONE GOOD NIGHT OUT."};if(si===3)r={cn:"今晚，戀愛暫停營業。",en:"LOVE: OFF DUTY TONIGHT.",rx:"今晚先選朋友，再選其他人。",rxen:"FRIENDS FIRST. EVERYTHING ELSE LATER."};if(si===5)r={cn:"本次診斷：機密。",en:"CLASSIFIED INFORMATION.",rx:"不必解釋。先再喝一杯。",rxen:"NO QUESTIONS. JUST ONE MORE DRINK."};if(si===0&&sis.includes(4))r={cn:"單身、穩定，稍微危險。",en:"SINGLE. STABLE. SLIGHTLY DANGEROUS.",rx:"年下不是症狀，但建議保持警覺。",rxen:"YOUNGER IS NOT A DIAGNOSIS. PROCEED WITH CAUTION."};if(si===0&&sis.includes(5))r={cn:"審美正常，決定未必。",en:"GOOD TASTE. QUESTIONABLE DECISIONS.",rx:"喜歡帥的沒有問題，其他條件記得一起看。",rxen:"LOOKS ARE FINE. CHECK THE REST TOO."};return r}
+function diagnose(){const st=document.querySelector('input[name="status"]:checked');if(!st){toast("請先選擇目前感情狀況");return}const sis=[...document.querySelectorAll('input[name="symptom"]:checked')].map(x=>+x.value);const si=+st.value,r=getDiagnosis(si,sis);document.getElementById('resultTitle').textContent=r.cn;document.getElementById('resultTitleEn').textContent=r.en;document.getElementById('resultStatus').textContent=statuses[si][0]+" / "+statuses[si][1];document.getElementById('resultSymptoms').innerHTML=sis.length?sis.map(i=>`<span class="badge">✓ ${symptoms[i][0]}</span>`).join(''):'<span class="badge">目前無明顯症狀</span>';document.getElementById('resultRx').textContent=r.rx;document.getElementById('resultRxEn').textContent=r.rxen;drawStory(r,statuses[si],sis.map(i=>symptoms[i]));go('checkResult')}
+function wrapText(ctx,text,x,y,maxWidth,lineHeight,maxLines=8){const chars=[...text];let line="",lines=[];for(const ch of chars){let test=line+ch;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=ch}else line=test}if(line)lines.push(line);lines=lines.slice(0,maxLines);lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lineHeight));return y+lines.length*lineHeight}
+const storyLogoData="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAABzCAYAAAC1g5g5AAANYElEQVR4nO3da6weRRkH8H+lUFQGZaSgjmBRVDSoBYSUKmoLphguJaQQqqhUFBNBKbcooGJAEDDBKgqRQCPYBEUwFWiLAcpNLiotLSVCTNQKjAXUMTCVcCk5fnj3nJzue9uZndmdd/f/S/hw3jMzzzzJ6cPu7L4zU8bGxkBEROl5Xd0TICKi3ligiYgSxQJNRJQoFmgiokSxQBMRJYoFmogoUSzQRESJYoEmIkoUCzQRUaJYoImIEsUCTUSUKBZoIqJEsUATE SWKBZqIKFEs0EREiWKBJiJKFAs0EVGiWKCJiBLFAk1ElCgWaCKiRLFAExEligWaiChRLNBEREv/AeGx0jBTAoGxAAAAAElFTkSuQmCC";
+function drawStory(r,status,sis){const c=document.getElementById('storyCanvas'),ctx=c.getContext('2d');const g=ctx.createLinearGradient(0,0,1080,1920);g.addColorStop(0,"#080808");g.addColorStop(.52,"#15100f");g.addColorStop(1,"#080808");ctx.fillStyle=g;ctx.fillRect(0,0,1080,1920);const glow=ctx.createRadialGradient(850,250,20,850,250,620);glow.addColorStop(0,"rgba(148,100,100,.24)");glow.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=glow;ctx.fillRect(0,0,1080,900);ctx.strokeStyle="rgba(214,183,126,.38)";ctx.lineWidth=2;ctx.strokeRect(66,66,948,1788);ctx.strokeStyle="rgba(214,183,126,.12)";ctx.strokeRect(84,84,912,1752);ctx.textAlign="center";const logo=new Image();logo.onload=()=>renderContent(logo);logo.onerror=()=>renderContent(null);logo.src=storyLogoData;function renderContent(logo){if(logo){const w=240,h=w*(logo.height/logo.width);ctx.drawImage(logo,540-w/2,120,w,h)}else{ctx.fillStyle="#eee8df";ctx.font="bold 86px Georgia";ctx.fillText("1884",540,205)}ctx.fillStyle="#d6b77e";ctx.font='24px "Noto Sans TC","Microsoft JhengHei",sans-serif';ctx.fillText("七夕",540,330);ctx.fillStyle="#bca074";ctx.font="22px Georgia";ctx.fillText("CHINESE VALENTINE'S NIGHT",540,370);ctx.fillStyle="#8e837b";ctx.font="20px Georgia";ctx.fillText("LOVE CHECK-UP",540,420);ctx.strokeStyle="rgba(214,183,126,.22)";ctx.beginPath();ctx.moveTo(420,455);ctx.lineTo(660,455);ctx.stroke();ctx.fillStyle="#f2ebe2";ctx.font='54px "Noto Serif TC","PMingLiU",serif';let y=wrapText(ctx,r.cn,540,585,790,68,4);ctx.fillStyle="#a99a91";ctx.font="28px Georgia";y=wrapText(ctx,r.en,540,y+25,790,39,3);y+=74;ctx.fillStyle="#d6b9b2";ctx.font='27px "Noto Sans TC","Microsoft JhengHei",sans-serif';ctx.fillText(status[0],540,y);ctx.fillStyle="#8c8179";ctx.font="19px Georgia";ctx.fillText(status[1],540,y+36);y+=128;ctx.fillStyle="#c9ab78";ctx.font='21px "Noto Sans TC","Microsoft JhengHei",sans-serif';ctx.fillText("目前症狀",540,y);ctx.fillStyle="#9d8b72";ctx.font="18px Georgia";ctx.fillText("CURRENT SYMPTOMS",540,y+31);y+=78;ctx.fillStyle="#efe8df";ctx.font='28px "Noto Sans TC","Microsoft JhengHei",sans-serif';if(sis.length){sis.slice(0,4).forEach(s=>{ctx.fillText("✓  "+s[0],540,y);y+=48})}else{ctx.fillText("目前無明顯症狀",540,y);y+=48}y+=48;ctx.strokeStyle="rgba(214,183,126,.2)";ctx.beginPath();ctx.moveTo(250,y);ctx.lineTo(830,y);ctx.stroke();y+=68;ctx.fillStyle="#c9ab78";ctx.font='21px "Noto Sans TC","Microsoft JhengHei",sans-serif';ctx.fillText("今晚處方",540,y);ctx.fillStyle="#9d8b72";ctx.font="18px Georgia";ctx.fillText("TODAY'S PRESCRIPTION",540,y+31);y+=90;ctx.fillStyle="#f2ebe2";ctx.font='bold 34px "Noto Sans TC","Microsoft JhengHei",sans-serif';y=wrapText(ctx,r.rx,540,y,760,48,4);ctx.fillStyle="#9f948c";ctx.font="22px Georgia";wrapText(ctx,r.rxen,540,y+24,760,32,4);ctx.fillStyle="#8b7a63";ctx.font="18px Georgia";ctx.fillText("LOVE, LIES & RED FLAGS.",540,1685);ctx.strokeStyle="rgba(214,183,126,.18)";ctx.beginPath();ctx.moveTo(445,1720);ctx.lineTo(635,1720);ctx.stroke();ctx.fillStyle="#716860";ctx.font="20px Georgia";ctx.fillText("1884 TAIPEI",540,1770);ctx.fillStyle="#655d57";ctx.font='18px "Noto Sans TC","Microsoft JhengHei",sans-serif';ctx.fillText("七夕限定",540,1803)}}}
+function downloadStory(){const a=document.createElement('a');a.download='1884-七夕-感情診斷.png';a.href=document.getElementById('storyCanvas').toDataURL('image/png');a.click()}
+async function shareStory(){const c=document.getElementById('storyCanvas');const blob=await new Promise(r=>c.toBlob(r,'image/png'));const f=new File([blob],'1884-七夕-感情診斷.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'1884 七夕'});return}catch(e){}}downloadStory()}
+let currentMission=null;function newMission(){const completed=JSON.parse(localStorage.getItem('1884_completed_missions')||'[]');let pool=missions.filter(m=>!completed.some(c=>c[0]===m[0]));if(!pool.length)pool=missions;const m=pool[Math.floor(Math.random()*pool.length)];currentMission=m;document.getElementById('missionText').textContent=m[0];document.getElementById('missionTextEn').textContent=m[1]}
+function missionDone(){if(!currentMission){toast("請先抽取一個任務");return}const completed=JSON.parse(localStorage.getItem('1884_completed_missions')||'[]');if(!completed.some(c=>c[0]===currentMission[0]))completed.unshift(currentMission);localStorage.setItem('1884_completed_missions',JSON.stringify(completed));renderCompletedMissions();toast("任務完成 · MISSION COMPLETE");currentMission=null}
+function renderCompletedMissions(){const completed=JSON.parse(localStorage.getItem('1884_completed_missions')||'[]');const wrap=document.getElementById('completedWrap'),el=document.getElementById('completedMissions');if(!wrap||!el)return;wrap.style.display=completed.length?'block':'none';el.innerHTML=completed.map(m=>`<div style="padding:12px 0;border-bottom:1px solid rgba(214,183,126,.14)"><div style="font-size:13px">✓ ${m[0]}</div><small class="english">${m[1]}</small></div>`).join('')}
+function submitEx(){const t=document.getElementById('exText').value.trim();if(!t){toast("先寫下一句，再把它丟掉");return}const arr=JSON.parse(localStorage.getItem('1884_ex_submissions')||'[]');arr.push({text:t,at:new Date().toISOString()});localStorage.setItem('1884_ex_submissions',JSON.stringify(arr));document.getElementById('exText').value='';document.getElementById('exSuccess').style.display='block';toast("回收完成 · SUCCESSFULLY RECYCLED")}
+function scoreRedFlag(){let score=0,done=0;rfQs.forEach((_,i)=>{const x=document.querySelector(`input[name="rf${i}"]:checked`);if(x){done++;score+=+x.value}});if(done<rfQs.length){toast("請先完成全部 "+rfQs.length+" 題");return}const pct=Math.round(score/rfQs.length*100);let cn="感情警訊雷達：運作正常。",en="RED FLAG RADAR: WORKING.";if(pct>=80){cn="妳看到的不是警訊，是潛力。";en="YOU SEE POTENTIAL, NOT RED FLAGS."}else if(pct>=40){cn="選擇性色盲，請小心。";en="SELECTIVELY COLOR-BLIND."}const el=document.getElementById('rfResult');el.style.display='block';el.innerHTML=`<div class="eyebrow">感情警訊容忍度 · RED FLAG TOLERANCE</div><div class="diagnosis">${pct}%</div><div style="font-family:'Noto Serif TC','PMingLiU',serif;font-size:19px">${cn}</div><div class="diagnosis-en" style="margin-top:8px">${en}</div>`;el.scrollIntoView({behavior:'smooth'})}
+init();renderCompletedMissions();
+</script>
+</body>
+</html>
