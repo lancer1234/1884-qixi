@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare site
+      - name: Prepare site and validate JavaScript
         run: |
           mkdir -p _site
           cp index.html 1884-logo-story.svg _site/
@@ -35,11 +35,13 @@ jobs:
           p = Path('_site/index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Keep all logo assets on the same GitHub Pages origin.
+          # Same-origin logo for both page and Story canvas.
           s = s.replace('https://1884.com.tw/1884-logo-transparent.png', './1884-logo-story.svg')
           s = re.sub(r'const storyLogoData="[^"]*";', 'const storyLogoData="./1884-logo-story.svg";', s)
 
-          # Decorative layers must never capture taps/clicks on Safari/mobile.
+          # Fix the extra closing brace in drawStory() that breaks Safari/JS parsing.
+          s = s.replace('ctx.fillText("七夕限定",540,1803)}}}', 'ctx.fillText("七夕限定",540,1803)}}')
+
           touch_fix = '''
           <style id="touch-fix">
             body::before,
@@ -58,6 +60,17 @@ jobs:
           s = s.replace('</head>', touch_fix + '\n</head>')
           p.write_text(s, encoding='utf-8')
           PY
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s = Path('_site/index.html').read_text(encoding='utf-8')
+          m = re.search(r'<script>(.*)</script>', s, re.S)
+          if not m:
+              raise SystemExit('No script block found')
+          Path('/tmp/app.js').write_text(m.group(1), encoding='utf-8')
+          PY
+          node --check /tmp/app.js
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
