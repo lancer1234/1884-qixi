@@ -23,16 +23,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Prepare site
+        run: |
+          mkdir -p _site
+          cp index.html 1884-logo-story.svg _site/
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('_site/index.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('https://1884.com.tw/1884-logo-transparent.png', './1884-logo-story.svg')
+          s = re.sub(r'const storyLogoData="[^"]*";', 'const storyLogoData="./1884-logo-story.svg";', s)
+          s = re.sub(r'logo\.src="data:image/png;base64,[^"]+";', 'logo.src="./1884-logo-story.svg";', s)
+          p.write_text(s, encoding='utf-8')
+          PY
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-# Deployment trigger
