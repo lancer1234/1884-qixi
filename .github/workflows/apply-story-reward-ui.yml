@@ -1,0 +1,92 @@
+name: Apply Story Reward UI
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-story-reward-ui.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index.html
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+
+          # CSS for reward callouts
+          if '.reward-note{' not in s:
+              anchor='.menu small{display:block;color:var(--muted);font-family:Georgia,serif;font-size:11px;line-height:1.45;margin-top:7px}'
+              css='''\n.menu-reward{display:block;margin-top:9px;color:#e4c98f;font-size:10px;line-height:1.45;letter-spacing:.02em}\n.reward-note{margin:14px 0 16px;border:1px solid rgba(214,183,126,.38);background:linear-gradient(135deg,rgba(112,70,71,.32),rgba(17,16,15,.96));padding:14px 15px;text-align:left;color:#eee8df;font-size:12px;line-height:1.75}\n.reward-note b{display:block;color:#f0dfbd;font-size:14px;font-weight:600;margin:3px 0}\n.reward-badge{display:block;color:var(--gold);font-family:Georgia,serif;font-size:10px;letter-spacing:.14em;margin-bottom:4px}\n'''
+              s=s.replace(anchor,anchor+css,1)
+
+          # Homepage copy + cards
+          s=s.replace('從感情診斷、秘密任務，到前任回收站。選一個，看看今晚會留下什麼。','從感情診斷、秘密任務、致前任到戀愛卡牌。想玩什麼，自己選。')
+          s=re.sub(r'<button onclick="go\(\'checkup\'\)"><span class="index">01</span><strong>感情診斷</strong><small>.*?</small>(?:<span class="menu-reward">.*?</span>)?</button>',
+                   '<button onclick="go(\'checkup\')"><span class="index">01</span><strong>感情診斷</strong><small>LOVE CHECK-UP · 生成 IG 限動分享圖</small><span class="menu-reward">分享＋Tag @1884_taipei｜送薯條一份</span></button>',s,count=1)
+          s=re.sub(r'<button onclick="go\(\'mission\'\)"><span class="index">02</span><strong>秘密任務</strong><small>.*?</small></button>',
+                   '<button onclick="go(\'mission\')"><span class="index">02</span><strong>秘密任務</strong><small>SECRET MISSION · 抽一張今晚任務</small></button>',s,count=1)
+          s=re.sub(r'<button onclick="go\(\'exbin\'\)"><span class="index">03</span><strong>.*?</strong><small>.*?</small></button>',
+                   '<button onclick="go(\'exbin\')"><span class="index">03</span><strong>致前任</strong><small>DEAR EX, · 留下一句不會傳出去的話</small></button>',s,count=1)
+          s=re.sub(r'<button onclick="(?:go\(\'redflag\'\)|location\.href=\'pixel-cards\.html\')"><span class="index">04</span><strong>.*?</strong><small>.*?</small></button>',
+                   '<button onclick="location.href=\'pixel-cards.html\'"><span class="index">04</span><strong>感情警訊小遊戲</strong><small>RED FLAG CARD GAME · 左右滑卡牌做決定</small></button>',s,count=1)
+
+          # Reward callout at top of LOVE CHECK-UP
+          reward_top='''<div class="reward-note"><span class="reward-badge">七夕分享禮 · STORY REWARD</span><b>完成診斷，分享限動＋Tag @1884_taipei</b>向現場工作人員出示，即送薯條一份。</div>\n    '''
+          check_anchor='<div class="split-title"><div class="cn">目前感情狀況</div><div class="en">CURRENT RELATIONSHIP STATUS</div></div>'
+          if '完成診斷，分享限動＋Tag @1884_taipei' not in s:
+              s=s.replace(check_anchor,reward_top+check_anchor,1)
+
+          # Reward callout beside Story preview/share button
+          if '分享這張感情診斷限動＋Tag @1884_taipei' not in s:
+              preview='<div class="story-preview"><canvas id="storyCanvas" width="1080" height="1920"></canvas></div>'
+              reward='''<div class="reward-note"><span class="reward-badge">七夕分享禮 · STORY REWARD</span><b>分享這張感情診斷限動＋Tag @1884_taipei</b>發布後向現場工作人員出示，即送薯條一份。</div>'''
+              s=s.replace(preview,preview+'\n  '+reward,1)
+
+          # Secret Mission is a pure game: remove Story/social missions
+          s=re.sub(r'\["發一則[^\n]*?限時動態[^\n]*?"[^\n]*?\],\n?','',s)
+          s=re.sub(r'\["拍一張只看得到酒杯、不看臉的神秘限動。"[^\n]*?\],\n?','',s)
+
+          # DEAR EX copy (also upgrades old EX Recycling Bin builds)
+          s=s.replace('<b>前任回收站</b><small>EX RECYCLING BIN</small>','<b>致前任</b><small>DEAR EX,</small>')
+          s=s.replace('七夕之前，有些東西該丟了。','有些話不用傳給他，留在 1884 就好。')
+          s=s.replace('LEAVE IT HERE BEFORE TONIGHT ENDS.','ONE LAST WORD, LEFT HERE.')
+          s=s.replace('匿名寫下妳遇過最大的感情警訊、最想對前任說的一句話，或一段荒謬到值得留下的故事。','匿名留下一句最想對前任說的話。可以是一直沒說出口的、現在才想明白的，或一句永遠不會真的傳出去的訊息。')
+          s=s.replace('placeholder="匿名寫在這裡，不需要留下名字。"','placeholder="最後想跟前任說什麼？匿名留在這裡就好。"')
+          s=s.replace('丟掉它 →<span class="english" style="color:#eadbd5">THROW IT AWAY</span>','留在這裡<span class="english" style="color:#eadbd5">LEAVE IT HERE</span>')
+          s=s.replace('回收完成 · SUCCESSFULLY RECYCLED','已留在這裡 · LEFT HERE')
+          s=s.replace('丟掉了，就別再撿回來。','有些話，說完就夠了。')
+          s=s.replace("DON'T PICK IT UP AGAIN.",'SOME WORDS ONLY NEED TO BE SAID ONCE.')
+          s=s.replace('toast("回收完成 · SUCCESSFULLY RECYCLED");','toast("已留在這裡 · LEFT HERE");')
+          s=s.replace('toast("先寫下一句，再把它丟掉")','toast("先留下一句話")')
+
+          p.write_text(s)
+
+          # Fail loudly if the user-facing changes are not present.
+          required=[
+            '分享＋Tag @1884_taipei｜送薯條一份',
+            '分享這張感情診斷限動＋Tag @1884_taipei',
+            '感情警訊小遊戲',
+            "location.href='pixel-cards.html'",
+            'DEAR EX,'
+          ]
+          for x in required:
+              assert x in s, x
+          assert '發一則今晚的限時動態並標記 1884' not in s
+          print('UI patch verified')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No changes needed'
+          else
+            git commit -m 'Show LOVE CHECK-UP story reward and simplify missions'
+            git push
+          fi
