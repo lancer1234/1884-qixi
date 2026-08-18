@@ -1,0 +1,90 @@
+name: Fix Card Characters
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-card-characters.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch card identities
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('pixel-cards.html')
+          s=p.read_text()
+
+          # Avoid collision with window.name / global id variables.
+          old="const card=document.getElementById('card'),rs=document.getElementById('rs'),gs=document.getElementById('gs'),portrait=document.getElementById('portrait');"
+          new="const card=document.getElementById('card'),rs=document.getElementById('rs'),gs=document.getElementById('gs'),portrait=document.getElementById('portrait'),nameEl=document.getElementById('name'),roleEl=document.getElementById('role'),accEl=document.getElementById('acc');"
+          s=s.replace(old,new)
+          s=s.replace("name.textContent=x.n;role.textContent=x.r;", "nameEl.textContent=x.n;roleEl.textContent=x.r;")
+          s=s.replace("acc.textContent=v.acc", "accEl.textContent=v.acc")
+
+          # Make every character identity match the actual relationship/context in the prompt.
+          repl={
+          "'不報備先生','MYSTERIOUS TYPE'":"'正在曖昧的他','曖昧對象 · SITUATIONSHIP'",
+          "'記性很好的他','ATTENTIVE TYPE'":"'約會了幾次的他','約會對象 · DATING'",
+          "'姐妹不認證的男人','BESTIE WARNING'":"'朋友介紹的他','朋友介紹 · FRIEND OF FRIEND'",
+          "'凌晨一點的訊息','LATE NIGHT CALL'":"'最近常聊天的他','曖昧對象 · LATE NIGHT TEXT'",
+          "'不定義關係先生','SITUATIONSHIP'":"'沒有名分的他','曖昧對象 · SITUATIONSHIP'",
+          "'有禮貌的男人','GREEN SIGNAL'":"'第一次約會的他','約會對象 · FIRST DATE'",
+          "'永遠沒錯先生','EX FILES'":"'正在認識的他','約會對象 · GETTING TO KNOW'",
+          "'進度很快的他','FAST TRACK'":"'今晚剛認識的他','剛認識 · FIRST MEET'",
+          "'社交圈開放先生','OPEN CIRCLE'":"'約會中的他','約會對象 · DATING'",
+          "'前任的聊天室','FINAL BOSS'":"'妳的前任','前任 · THE EX'",
+          "'太會聊天的他','CHARMING TYPE'":"'最近很會哄妳的他','曖昧對象 · CHARMING'",
+          "'會做計畫的男人','PLANNER'":"'正在約妳的他','約會對象 · NEXT DATE'",
+          "'社群很忙先生','SOCIAL BUTTERFLY'":"'IG剛互追的他','剛認識 · SOCIAL MEDIA'",
+          "'限動觀察員','ONLINE GHOST'":"'訊息常消失的他','曖昧對象 · ONLINE'",
+          "'女性朋友很多的他','POPULAR TYPE'":"'正在認識的他','曖昧對象 · GETTING TO KNOW'",
+          "'安全下莊先生','SAFE RIDE'":"'今晚陪妳喝酒的他','約會對象 · NIGHT OUT'",
+          "'佛系先生','TOO CHILL'":"'交往中的他','另一半 · PARTNER'",
+          "'戶籍調查員','TOO CURIOUS'":"'第一次見面的他','剛認識 · FIRST MEET'",
+          "'剛恢復單身先生','FRESH BREAKUP'":"'朋友介紹的他','剛恢復單身 · FRESH BREAKUP'",
+          "'見家長快轉先生','SPEED RUN'":"'認識第四天的他','剛認識 · DAY FOUR'",
+          "'行動派先生','CONSISTENT TYPE'":"'穩定約會中的他','約會對象 · CONSISTENT'",
+          "'隨便都好先生','PASSIVE TYPE'":"'約會中的他','約會對象 · DATING'",
+          "'神秘帳號先生','NO FACE ONLINE'":"'交友軟體認識的他','交友軟體 · DATING APP'",
+          "'有界線感的他','RESPECTFUL TYPE'":"'正在約會的他','約會對象 · RESPECTFUL'",
+          "'秘密先生','KEEP IT SECRET'":"'曖昧一陣子的他','曖昧對象 · SECRET'",
+          "'忘記改密碼先生','EX DETECTED'":"'交往中的他','另一半 · PARTNER'",
+          "'願意陪妳的他','EFFORT TYPE'":"'穩定約會中的他','約會對象 · EFFORT'",
+          "'嘴硬先生','SECRETLY INVESTED'":"'最近在聊天的他','曖昧對象 · SECRETLY INVESTED'",
+          "'兩杯寶貝先生','DRUNK FLIRT'":"'今晚剛認識的他','剛認識 · DRUNK FLIRT'",
+          "'姐妹認證候選人','BESTIE APPROVED'":"'正在約會的他','約會對象 · BESTIE APPROVED'",
+          "'不太用IG先生','DIGITAL MYSTERY'":"'IG上認識的他','社群認識 · ONLINE'",
+          "'專心約會先生','PRESENT TYPE'":"'第一次約會的他','約會對象 · FIRST DATE'",
+          "'順其自然先生','AMBIGUOUS TYPE'":"'曖昧一陣子的他','曖昧對象 · AMBIGUOUS'",
+          "'記得姐妹先生','DETAIL ORIENTED'":"'約會一陣子的他','約會對象 · DATING'",
+          "'陪到最後先生','LAST CALL'":"'今晚跟妳約會的他','約會對象 · LAST CALL'",
+          "'被動出席先生','LOW INITIATIVE'":"'約會一陣子的他','約會對象 · LOW INITIATIVE'",
+          "'誠實先生','CLEAR BOUNDARY'":"'喜歡過的朋友','朋友 · CLEAR BOUNDARY'",
+          "'直覺警報先生','GUT FEELING'":"'第一次約會的他','約會對象 · GUT FEELING'",
+          "'下一攤先生','AFTER HOURS'":"'今晚剛認識的他','剛認識 · AFTER HOURS'",
+          "'正常稱讚先生','SIMPLE WIN'":"'今晚遇到的他','剛認識 · SIMPLE FLIRT'"
+          }
+          for a,b in repl.items():
+              if a not in s:
+                  print('WARN missing:',a)
+              s=s.replace(a,b)
+
+          # Remove the generic fallback wording so even a failed render does not misleadingly say stranger.
+          s=s.replace('<div class="label" id="name">今晚的陌生人</div><div class="role" id="role">LOVE EVENT</div>', '<div class="label" id="name">今晚的戀愛事件</div><div class="role" id="role">LOVE DECISION</div>')
+          p.write_text(s)
+          PY
+          # Basic assertions
+          grep -q "nameEl.textContent=x.n" pixel-cards.html
+          ! grep -q "今晚的陌生人" pixel-cards.html
+          ! grep -q "不報備先生" pixel-cards.html
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pixel-cards.html
+          git diff --cached --quiet || git commit -m "Match card characters to relationship scenarios"
+          git push
