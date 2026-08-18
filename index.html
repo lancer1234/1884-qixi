@@ -121,7 +121,7 @@ textarea{width:100%;min-height:160px;background:#0b0a0a;border:1px solid var(--l
     <div class="menu">
       <button onclick="go('checkup')"><span class="index">01</span><strong>感情診斷</strong><small>LOVE CHECK-UP</small></button>
       <button onclick="go('mission')"><span class="index">02</span><strong>秘密任務</strong><small>SECRET MISSION</small></button>
-      <button onclick="go('exbin')"><span class="index">03</span><strong>前任回收站</strong><small>EX RECYCLING BIN</small></button>
+      <button onclick="go('exbin')"><span class="index">03</span><strong>致前任</strong><small>DEAR EX,</small></button>
       <button onclick="window.location.href='pixel-cards.html'"><span class="index">04</span><strong>感情警訊測驗</strong><small>RED FLAG TEST</small></button>
     </div>
   </div>
@@ -163,15 +163,15 @@ textarea{width:100%;min-height:160px;background:#0b0a0a;border:1px solid var(--l
   </div>
 </section>
 <section id="exbin" class="screen">
-  <div class="topbar"><button class="back" onclick="go('home')">←</button><div><b>前任回收站</b><small>EX RECYCLING BIN</small></div></div>
+  <div class="topbar"><button class="back" onclick="go('home')">←</button><div><b>致前任</b><small>DEAR EX,</small></div></div>
   <div class="card">
-    <h2>七夕之前，有些東西該丟了。</h2><span class="english">LEAVE IT HERE BEFORE TONIGHT ENDS.</span>
-    <p>匿名寫下妳遇過最大的感情警訊、最想對前任說的一句話，或一段荒謬到值得留下的故事。</p>
-    <textarea id="exText" maxlength="300" placeholder="匿名寫在這裡，不需要留下名字。"></textarea>
-    <div class="actions"><button class="primary" onclick="submitEx()">丟掉它 →<span class="english" style="color:#eadbd5">THROW IT AWAY</span></button></div>
-    <div class="note">現場同時保留實體「前任回收站」。網頁與實體雙軌並行，避免網路或設備異常影響活動。</div>
+    <h2>有些話不用傳給他，留在 1884 就好。</h2><span class="english">SOME WORDS ARE BETTER LEFT HERE.</span>
+    <p>匿名留下一句最想對前任說的話。可以是一直沒說出口的話、現在回頭最想告訴他的事，或一句不會真的傳出去的訊息。</p>
+    <textarea id="exText" maxlength="300" placeholder="最後想跟前任說什麼？匿名留在這裡就好。"></textarea>
+    <div class="actions"><button class="primary" onclick="submitEx()">留在這裡<span class="english" style="color:#eadbd5">LEAVE IT HERE</span></button></div>
+    <div class="note">現場可同步保留簡單的實體投稿箱、紙條與筆，讓客人自由選擇參與方式。</div>
   </div>
-  <div id="exSuccess" class="card result" style="display:none"><div class="eyebrow">回收完成 · SUCCESSFULLY RECYCLED</div><div class="diagnosis">丟掉了，就別再撿回來。</div><div class="diagnosis-en">DON'T PICK IT UP AGAIN.</div></div>
+  <div id="exSuccess" class="card result" style="display:none"><div class="eyebrow">已留在這裡 · MESSAGE LEFT</div><div class="diagnosis">有些話，說完就夠了。</div><div class="diagnosis-en">SOME WORDS ARE ENOUGH ONCE SAID.</div></div>
 </section>
 <section id="redflag" class="screen">
   <div class="topbar"><button class="back" onclick="go('home')">←</button><div><b>感情警訊測驗</b><small>RED FLAG TEST</small></div></div>
