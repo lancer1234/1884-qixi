@@ -1,0 +1,33 @@
+name: Add card analytics
+on:
+  push:
+    paths:
+      - '.github/workflows/add-card-analytics.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inject analytics scripts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('pixel-cards-game.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<script src="ex-recycling-config.js"></script><script src="card-game-analytics.js"></script>'
+          if marker not in s:
+              if '</body>' not in s:
+                  raise SystemExit('Missing </body>')
+              s = s.replace('</body>', marker + '</body>', 1)
+              p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pixel-cards-game.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Track Red Flag game completion"
+          git push
