@@ -95,4 +95,4 @@ function choose(right){let x=deck[i],d=right?x.G:x.L;stats=stats.map((v,k)=>v+d[
 function finish(){let [mind,heart,bestie,drink]=stats;let title=mind<30?'姐妹請看好我。':heart>75?'戀愛腦已上線。':bestie<30?'今晚妳選愛情，不選姐妹。':drink>75?'微醺決策模式。':mind>75?'理智派安全下莊。':'今晚安全下莊。';ending.textContent=title;result.innerHTML=`理智 ${mind}%　心動 ${heart}%<br>姐妹 ${bestie}%　酒量 ${drink}%<br><br>本局隨機 15 / ${events.length} 張<br><br>LOVE, LIES & RED FLAGS.`;end.classList.remove('hidden')}
 function restart(){end.classList.add('hidden');shuffle.classList.remove('hidden');boot()}
 card.addEventListener('mousedown',start);window.addEventListener('mousemove',move);window.addEventListener('mouseup',stop);card.addEventListener('touchstart',start,{passive:true});card.addEventListener('touchmove',move,{passive:false});card.addEventListener('touchend',stop);document.getElementById('again').addEventListener('click',restart);boot();
-</script></body></html>
+</script><script src="ex-recycling-config.js"></script><script src="card-game-analytics.js"></script></body></html>
